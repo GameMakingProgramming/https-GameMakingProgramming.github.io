@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="jp">
+
+<head>
+    <title>ブロック崩し</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="style.css" rel="stylesheet" />
+    <script defer src="settings.js"></script>
+    <script defer src="bar.js"></script>
+    <script defer src="balls.js"></script>
+    <script defer src="blocks.js"></script>
+    <script defer src="main.js"></script>
+</head>
+
+<body>
+    <div id="game-screen">
+
+        <canvas id="blocks-canvas"></canvas>
+        <canvas id="bar-balls-canvas"></canvas>
+
+        <!-- メッセージを表示させる -->
+        <div id="message-container">
+            <div id="message" class="label"></div>
+        </div>
+
+        <!-- ボールやブロックの数を表示させる -->
+        <div id="counter" class="label">
+            <div>ブロックの数：<span id="blocks-count"></span></div>
+        </div>
+
+    </div>
+</body>
+
+</html>

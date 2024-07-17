@@ -1,0 +1,144 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+body {
+    background-color: black;
+}
+
+.battle-area {
+    height: 100vh;
+    margin: 0 auto;
+    aspect-ratio: 1 / 2;
+}
+/* 敵エリア */
+.rival-area{
+    position: relative;
+    background-color: brown;
+    height: 45%;
+    width: 100%;
+}
+.floor {
+    position: absolute;
+    top: 3%;
+    left: 2%;
+}
+.status {
+    position: absolute;
+    top: 5%;
+    right: 5%;
+}
+.rival-character img {
+    width: 70%;
+    position: absolute;
+    bottom: 0%;
+    left: 50%;
+    transform: translate(-50%);
+}
+.rival-life {
+    position: absolute;
+    right: 5%;
+    bottom: 5%;
+    background-color: chartreuse;
+}
+
+/* 自エリア */
+.my-area {
+    position: relative;
+    background-color: aquamarine;
+    height: 55%;
+    width: 100%;
+}
+.my-life {
+    position: absolute;
+    top: 3%;
+    left: 3%;
+}
+.heart {
+    color: rgb(251, 0, 0);
+}
+.my-hp {
+    background-color: chartreuse;
+}
+.attack-formula {
+    position: absolute;
+    right: 3%;
+    top: 3%;
+    width: 75%;
+    text-align: right;
+}
+.attack-formula input {
+    font-size: 130%;
+    width: 100%;
+}
+.attack-formula button {
+    font-size: 80%;
+    width: 17%;
+}
+.numbers-space {
+    height: 75%;
+    width: 54%;
+    position: absolute;
+    left: 2%;
+    bottom: 3%;
+    background-color: darkgreen;
+}
+.numbers-space a {
+    margin: 1%;
+    font-size: 200%;
+    width: 2.9rem;
+    height: 2.9rem;
+    display: inline-block;
+    text-decoration: none;
+    background-color: #488c98;
+    color: #FFF;
+    line-height: 2.9rem;
+    border-radius: 50%;
+    text-align: center;
+    font-weight: 900;
+    overflow: hidden;
+    box-shadow: 0rem 0.1rem 0.1rem rgba(0, 22, 35, 0.846);
+    border-bottom: solid 0.15rem #0f0f0f;
+    transition: .5s;
+}
+.selected {
+    -webkit-transform: translateY(0.1rem);
+    transform: translateY(0.1rem);
+    background-color: #222e32;
+    box-shadow: 0 0 0.05rem rgba(0, 35, 34, 0.15);
+    border-bottom: none;
+    text-shadow: -0.3rem 0rem 1.5rem rgb(255, 255, 255),
+                  0.3rem 0rem 1.5rem rgba(255, 255, 255, 0.83);
+  }
+
+.operator-space {
+    height: 75%;
+    width: 40%;
+    position: absolute;
+    right: 2%;
+    bottom: 3%;
+    background-color: darkcyan;
+}
+.operator-space button {
+    font-size: 200%;
+    width: 45%;
+}
+
+@media (min-width: 200vh) {
+    .battle-area {
+        aspect-ratio: 2 / 1;
+    }
+    .rival-area {
+        float: left;
+        height: 90%;
+        width: 50%;
+    }
+    .my-area {
+        float: right;
+        height: 100%;
+        width: 50%;
+    }
+}
