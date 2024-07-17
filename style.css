@@ -1,0 +1,61 @@
+.reference {
+  font-size: small;
+  margin: 1%;
+}
+
+button{
+    text-decoration: none;
+}
+.btn {
+    color: blue
+    background-color rgb(111, 245, 80);
+}
+
+.btn-sf-like {
+  position: relative;
+  display: inline-block;
+  font-weight: bold;
+  text-decoration: none;
+  color: #FFF;
+  text-shadow: 0 0 5rem rgba(255, 255, 255, 0.73);
+  padding: 0.3em 0.5em;
+  background: #465658;
+  border-top: solid 3rem #222e32;
+  border-bottom: solid 3rem #353a3c;
+  transition: .7s;
+}
+
+.btn-sf-like:hover {
+  text-shadow: -6rem 0rem 15rem rgba(255, 246, 246, 0.83),
+               6rem 0rem 15rem rgba(248, 223, 223, 0.83);
+}
+
+
+
+.btn-circle-3d {
+  margin: 1%;
+  font-size: 200%;
+  width: 2.9rem;
+  height: 2.9rem;
+  display: inline-block;
+  text-decoration: none;
+  background-color: #488c98;
+  color: #FFF;
+  line-height: 2.9rem;
+  border-radius: 50%;
+  text-align: center;
+  font-weight: 900;
+  overflow: hidden;
+  box-shadow: 0rem 0.1rem 0.1rem rgba(0, 22, 35, 0.846);
+  border-bottom: solid 0.15rem #0f0f0f;
+  transition: .5s;
+}
+.btn-circle-3d:active {
+  -webkit-transform: translateY(0.1rem);
+  transform: translateY(0.1rem);
+  background-color: #222e32;
+  box-shadow: 0 0 0.05rem rgba(0, 35, 34, 0.15);
+  border-bottom: none;
+  text-shadow: -0.3rem 0rem 1.5rem rgb(255, 255, 255),
+                0.3rem 0rem 1.5rem rgba(255, 255, 255, 0.83);
+}
