@@ -78,6 +78,17 @@ body {
     font-size: 80%;
     width: 17%;
 }
+
+.selected {
+    -webkit-transform: translateY(0.1rem) !important;
+    transform: translateY(0.1rem);
+    background-color: #222e32 !important;
+    box-shadow: 0 0 0.05rem rgba(0, 35, 34, 0.15) !important;
+    border-bottom: none !important;
+    text-shadow: -0.3rem 0rem 1.5rem rgb(255, 255, 255),
+                  0.3rem 0rem 1.5rem rgba(255, 255, 255, 0.83);
+  }
+
 .numbers-space {
     height: 75%;
     width: 54%;
@@ -104,15 +115,7 @@ body {
     border-bottom: solid 0.15rem #0f0f0f;
     transition: .5s;
 }
-.selected {
-    -webkit-transform: translateY(0.1rem);
-    transform: translateY(0.1rem);
-    background-color: #222e32;
-    box-shadow: 0 0 0.05rem rgba(0, 35, 34, 0.15);
-    border-bottom: none;
-    text-shadow: -0.3rem 0rem 1.5rem rgb(255, 255, 255),
-                  0.3rem 0rem 1.5rem rgba(255, 255, 255, 0.83);
-  }
+
 
 .operator-space {
     height: 75%;
