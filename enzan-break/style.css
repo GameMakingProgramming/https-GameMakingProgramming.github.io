@@ -17,7 +17,7 @@ body {
 /* 敵エリア */
 .rival-area{
     position: relative;
-    background-color: brown;
+    background-color: rgb(59, 110, 105);
     height: 45%;
     width: 100%;
 }
@@ -48,7 +48,7 @@ body {
 /* 自エリア */
 .my-area {
     position: relative;
-    background-color: aquamarine;
+    background-color: rgb(255, 238, 203);
     height: 55%;
     width: 100%;
 }
@@ -95,7 +95,7 @@ body {
     position: absolute;
     left: 2%;
     bottom: 3%;
-    background-color: darkgreen;
+    background-color: rgb(111, 243, 250);
 }
 .numbers-space a {
     margin: 1%;
@@ -123,7 +123,7 @@ body {
     position: absolute;
     right: 2%;
     bottom: 3%;
-    background-color: darkcyan;
+    background-color: rgb(151, 252, 69);
 }
 .operator-space button {
     font-size: 200%;
