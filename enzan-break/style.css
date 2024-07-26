@@ -125,10 +125,25 @@ body {
     bottom: 3%;
     background-color: rgb(151, 252, 69);
 }
-.operator-space button {
+.operator-space a {
+    margin: 1%;
     font-size: 200%;
-    width: 45%;
+    width: 2.9rem;
+    height: 2.9rem;
+    display: inline-block;
+    text-decoration: none;
+    background-color: #65984a;
+    color: #FFF;
+    line-height: 2.9rem;
+    border-radius: 50%;
+    text-align: center;
+    font-weight: 900;
+    overflow: hidden;
+    box-shadow: 0rem 0.1rem 0.1rem rgba(0, 22, 35, 0.846);
+    border-bottom: solid 0.15rem #0f0f0f;
+    transition: .5s;
 }
+
 
 @media (min-width: 50vh) {
     .battle-area {
