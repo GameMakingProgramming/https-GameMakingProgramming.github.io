@@ -24,3 +24,10 @@ attackFormulaOpe.forEach((value) => {
     cards.classList.toggle("selected");
     });
 });
+
+
+// attackFormulaNum = attackFormula.map(Number);
+function sorting () {
+    attackFormulaNum = attackFormula.filter((x) => {return typeof x === 'number'})
+    attackFormulaOpe = attackFormula.filter((x) => {return typeof x === 'string'})
+}
