@@ -2,7 +2,7 @@ const input = document.getElementById('input');
 const numbers = document.getElementById('numbers');
 const operator = document.getElementById('operator');
 const backSpace = document.getElementById('back-space');
-let attackFormula = [1, '+', 2, '+', 5, 5, '-'];
+let attackFormula = [1, '+', 2, '+', 5, 5, '-',];
 let selectionField = [];
 let numOrOpe = [0];
 let log = []; 
@@ -46,23 +46,23 @@ attackFormulaOpe.forEach((value, index) => {
     }
     });
 });
-}
-        backSpace.addEventListener('click', function () {
-            if (numOrOpe == 0) {
-                operator.children[log[log.length-1]].classList.remove('selected');
-                log.pop();
-                selectionField.pop();
-                numOrOpe--;
-                input.value = selectionField.join(''); //配列selectionFieldを',を取って入力フォームに表示する
+backSpace.addEventListener('click', function () {
+    if(selectionField[0]) {
+        if (numOrOpe == 0) {
+            operator.children[log[log.length-1]].classList.remove('selected');
+            log.pop();
+            selectionField.pop();
+            numOrOpe++;
+            input.value = selectionField.join(''); //配列selectionFieldを',を取って入力フォームに表示する
             } else {
                 numbers.children[log[log.length-1]].classList.remove('selected');
                 log.pop();
                 selectionField.pop();
-                numOrOpe++;
+                numOrOpe--;
                 input.value = selectionField.join(''); //配列selectionFieldを',を取って入力フォームに表示する
-            }
-        })
-
+                }}
+})
+}
 // attackFormulaNum = attackFormula.map(Number);
 
 // 数字と演算子を分ける
