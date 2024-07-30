@@ -45,6 +45,18 @@ body {
     background-color: chartreuse;
 }
 
+.damage-caused {
+    position: absolute;
+    height: 30%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    font-size: 200%;
+    /* background-color: aqua; */
+    bottom: 15%;
+}
+
 /* 自エリア */
 .my-area {
     position: relative;
