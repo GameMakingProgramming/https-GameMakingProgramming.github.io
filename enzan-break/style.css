@@ -8,8 +8,39 @@
 body {
     background-color: black;
 }
+/* スタート画面 */
+.start-menu {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    background-color: white;
+    width: 100vmin;
+    margin: 0 auto;
+    aspect-ratio: 1 / 2;
+    visibility: visible;
+}
+.start-menu ul {
+    width: 100%;
+    position: absolute;
+    top: 35%;
+}
+.start-menu li {
+    font-size: 150%;
+    font-weight: bold;
+    color: #488c98;
+    width: fit-content;
+    margin: auto;
+    margin-bottom: 5%;
+}
 
+/* バトル画面 */
 .battle-area {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 100vmin;
     margin: 0 auto;
     aspect-ratio: 1 / 2;
@@ -53,8 +84,17 @@ body {
     justify-content: center;
     display: flex;
     font-size: 200%;
-    /* background-color: aqua; */
     bottom: 15%;
+    text-shadow: #222e32 3px 3px 10px;
+    visibility: hidden;
+    transition: .5s;
+}
+.damage-caused p {
+    font-size: 150%;
+    font-weight: bold;
+    padding: 10%;
+    color: rgb(216, 0, 0);
+    background-color: #0f0f0f;
 }
 
 /* 自エリア */
@@ -97,8 +137,6 @@ body {
     background-color: #222e32 !important;
     box-shadow: 0 0 0.05rem rgba(0, 35, 34, 0.15) !important;
     border-bottom: none !important;
-    text-shadow: -0.3rem 0rem 1.5rem rgb(255, 255, 255),
-                  0.3rem 0rem 1.5rem rgba(255, 255, 255, 0.83);
   }
 
 .numbers-space {
@@ -125,7 +163,6 @@ body {
     overflow: hidden;
     box-shadow: 0rem 0.1rem 0.1rem rgba(0, 22, 35, 0.846);
     border-bottom: solid 0.15rem #0f0f0f;
-    transition: .5s;
 }
 
 
@@ -158,14 +195,14 @@ body {
 
 
 @media (min-width: 50vh) {
-    .battle-area {
+    .start-menu, .battle-area {
         width: auto;
         height: 100vh;
     }
 }
 
 @media (min-width: 200vh) {
-    .battle-area {
+    .start-menu, .battle-area {
         aspect-ratio: 2 / 1;
     }
     .rival-area {

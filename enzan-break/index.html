@@ -7,6 +7,21 @@
     <title>演斬ブレイク</title>
 </head>
 <body>
+    <!-- スタート画面 -->
+    <div class="start-menu" id="startMenu">
+            <ul>
+                <li><a id="gameStart">ゲームスタート</a></li>
+                <li><a>記録</a></li>
+                <li><a>遊び方</a></li>
+            </ul>
+    </div>
+
+    <!-- 階段画面 -->
+     <div>
+
+     </div>
+
+    <!-- バトル画面 -->
     <div  class="battle-area">
         <!-- 敵エリア -->
         <div class="rival-area">
@@ -25,9 +40,9 @@
                 <img src="./image/fantasy_game_character_slime.png" alt="">
             </div>
             <!-- 敵HP -->
-            <div class="rival-life">12/12</div>
+            <div class="rival-life" id="rivalLife">20/20</div>
             <!-- 与えたダメージ -->
-             <div class="damage-caused">
+             <div class="damage-caused" id="damage">
                 <p id="damageCaused"></p>
              </div>
         </div>

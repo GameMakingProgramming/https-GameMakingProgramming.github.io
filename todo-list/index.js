@@ -22,27 +22,29 @@
     }
 
     if (todoText) {
-    const li = document.createElement("li");
+    const lili = document.createElement("li");
 
-    li.innerText = todoText;
-    li.classList.add("list-group-item")
+    lili.innerText = todoText;
+    lili.classList.add("list-group-item")
 
     if (todo && todo.completed) {
-        li.classList.add("text-decoration-line-through");
+        lili.classList.add("text-decoration-line-through");
     }
 
-    li.addEventListener("contextmenu", function(event){
+    lili.addEventListener("contextmenu", function(event){
             event.preventDefault();
-            li.remove();
+            lili.remove();
             saveData();
         });
 
-        li.addEventListener("click", function () {
-            li.classList.toggle("text-decoration-line-through");
+        lili.addEventListener("click", function () {
+            lili.classList.toggle("text-decoration-line-through");
             saveData();
         });
 
-    ul.appendChild(li);
+        console.log(lili);
+
+    ul.appendChild(lili);
     input.value = "";
     saveData();
   }
@@ -52,11 +54,11 @@
     const lists = document.querySelectorAll("li");
     const todos = [];
 
-    lists.forEach((li) => {
+    lists.forEach((lili) => {
         todos.push({
-            text: li.innerText,
-            completed: li.classList.contains("text-decoration-line-through")
+            text: lili.innerText,
+            completed: lili.classList.contains("text-decoration-line-through")
         });
     });
     localStorage.setItem("todos", JSON.stringify(todos));
- }
+}
