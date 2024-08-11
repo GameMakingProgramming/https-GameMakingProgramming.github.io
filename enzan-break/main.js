@@ -1,32 +1,89 @@
 const startMenu = document.getElementById('startMenu');
 const gameStart = document.getElementById('gameStart');
+const stairs = document.getElementById('stairs');
+const stairsScreen = document.getElementById('stairsScreen');
 const input = document.getElementById('input');
 const numbers = document.getElementById('numbers');
 const operator = document.getElementById('operator');
 const backSpace = document.getElementById('back-space');
 const calculation = document.getElementById('calculation');
-const damageCaused = document.getElementById('damageCaused');
-const damage = document.getElementById('damage');
+const damageCausedDisplay = document.getElementById('damageCausedDisplay');
+const damageCausedHtml = document.getElementById('damageCausedHtml');
+const damageReceivedDisplay = document.getElementById('damageReceivedDisplay');
+const damageReceivedHtml = document.getElementById('damageReceivedHtml');
+
+const floor = document.getElementById('floor');
+const rivalAttack = document.getElementById('rivalAttack');
+const rivalDefense = document.getElementById('rivalDefense');
+const rivalWeakness = document.getElementById('rivalWeakness');
+const rivalMAxLife = document.getElementById('rivalMAxLife');
 const rivalLife = document.getElementById('rivalLife');
-let attackFormula = [1, '+', 2, '+', 5, 5, '-', '×', '÷', 7, 8,];
-let selectionField = [];
-let numOrOpe = [0];
-let log = []; 
+const rivalLifeBar = document.getElementById('rivalLifeBar');
+const myLife = document.getElementById('myLife');
+const myMaxHp = document.getElementById('myMaxHp');
+const myHp = document.getElementById('myHp');
+const myHpBar = document.getElementById('myHpBar');
+
+let attackFormula = [1, '+', 2, '+', 3, 4, 5, 6, '-', '×', '÷', 7, 8,]; //手札
+let selectionField = []; //選んだ手札
+let numOrOpe = [0]; //切り替えスイッチ
+let numLog = []; //選んだ数字の手札の位置
+let opeLog = []; //選んだ演算子の手札の位置
+let numberOfFloors = [0]; //階数
+stairs.innerText = numberOfFloors; //0階を表示
+
+let rivalStatus = [20, 10, 5, 0, 20] //HP[0], 攻撃[1], 防御[2], 弱点[3], 残りHP[4]
+let myStatus = [3, 20, 20] //ライフ[0], HP[1] ,残りHP[2]
+
+//セッティング
+function setting () {
+    floor.innerText = numberOfFloors;
+    rivalMaxLife.innerText = rivalStatus[0];
+    rivalLife.innerText = rivalStatus[0];
+    rivalAttack.innerText = rivalStatus[1];
+    rivalDefense.innerText = rivalStatus[2];
+    rivalWeakness.innerText = rivalStatus[3];
+    myLife.innerText = myStatus[0];
+    myMaxHp.innerText = myStatus[1];
+    myHp.innerText = myStatus[2];
+}
+//階段を上る
+function goUpTheStairs () {
+    setTimeout(() => { //1秒後に
+        numberOfFloors++; //階数を1増やす
+        stairs.innerText = numberOfFloors; //階数を表示する
+        setting ();
+        stairsScreen.addEventListener('click', function () { //画面をクリックしたら
+            stairsScreen.style.visibility = 'hidden'; //階段画面を非表示にする
+        })
+    }, 1000);
+}
 
 // 数字と演算子を分ける
 function sorting () {
     attackFormulaNum = attackFormula.filter((x) => {return typeof x === 'number'}) //attackFormulaから数字を取り出す
     attackFormulaOpe = attackFormula.filter((x) => {return typeof x === 'string'}) //attackFormulaから演算子を取り出す
 }
-
-function rivalDamageDisplay (num) {
-    selectionField = [];
-    input.value = '';
-    numOrOpe = num;
-    damage.style.visibility = 'visible'; //htmlを表示
-    setTimeout(() => {
-        damage.style.visibility = 'hidden';
+//与えたダメージの表示
+function rivalDamageDisplay () { 
+    selectionField = []; //選んだ手札をリセット
+    numLog = []; //選んだ数字の手札の位置
+    opeLog = []; //選んだ演算子の手札の位置
+    input.value = ''; //入力フォームをリセット
+    damageCausedHtml.style.visibility = 'visible'; //htmlを表示
+    setTimeout(() => { //1.5秒後に
+        damageCausedHtml.style.visibility = 'hidden'; //ダメージの表示を消す
     }, 1500);
+}
+
+//ボタンを削除する
+function eraseAllButtons() {
+    while(numbers.firstChild) {
+        numbers.removeChild(numbers.firstChild);
+    }
+    while(operator.firstChild) {
+        operator.removeChild(operator.firstChild);
+    }
 }
 
 // 数字と演算子の処理
@@ -38,7 +95,7 @@ attackFormulaNum.forEach((value, index) => {
     numbers.appendChild(cards); //aタグをnumbersの子要素にする
     cards.addEventListener("click", function () {//aタグをクリックしたら
     if (numOrOpe == 0 && !cards.classList.contains('selected')) { //numOrOpeが0でボタンが押されていなかったら
-        log.push(index); //logに入力した数字の配置を記録する
+        numLog.push(index); //logに入力した数字の配置を記録する
         cards.classList.add('selected'); //クリックしたaタグにselectedのクラスをつける
         numOrOpe++; //numOrOpeを1にする
         selectionField.push(cards.textContent); //配列selectionFieldにクリックしたaタグの内容を入れる
@@ -53,7 +110,7 @@ attackFormulaOpe.forEach((value, index) => {
     operator.appendChild(cards); //aタグをoperatorの子要素にする
     cards.addEventListener("click", function () { //aタグをクリックしたら
     if (numOrOpe == 1 && !cards.classList.contains('selected')) { //numOrOpeが1でボタンが押されていなかったら
-            log.push(index); //logに入力した演算子の配置を記録する
+            opeLog.push(index); //logに入力した演算子の配置を記録する
         cards.classList.add('selected'); //クリックしたaタグにselectedのクラスをつける
         numOrOpe--; //numOrOpeを0にする
         selectionField.push(cards.textContent); //配列selectionFieldにクリックしたaタグの内容を入れる
@@ -61,51 +118,107 @@ attackFormulaOpe.forEach((value, index) => {
     }
     });
 });
+}
+//固定ボタンセット
+function fixedButtonSetting () {
+//バックスペース
 backSpace.addEventListener('click', function () { //クリックされたら
     if(selectionField[0]) { //入力欄に何も入力されていなかったら
         if (numOrOpe == 0) { //numOrOpeが0、演算子だったら
-            operator.children[log[log.length-1]].classList.remove('selected'); //直前に入力されたボタンのクラスを外す
-            log.pop(); //配列logの最後の演算子を削除する
+            operator.children[opeLog[opeLog.length-1]].classList.remove('selected'); //直前に入力されたボタンのクラスを外す
+            opeLog.pop(); //配列logの最後の演算子を削除する
             selectionField.pop(); //入力欄の演算子を削除する
             numOrOpe++; //numOrOpeを1にする
             input.value = selectionField.join(''); //配列selectionFieldを',を取って入力フォームに表示する
             } else if (numOrOpe == 1) { //numOrOpeが1、数字だったら
-                numbers.children[log[log.length-1]].classList.remove('selected'); //直前に入力されたボタンのクラスを外す
-                log.pop(); //配列logの最後の数字を削除する
+                numbers.children[numLog[numLog.length-1]].classList.remove('selected'); //直前に入力されたボタンのクラスを外す
+                numLog.pop(); //配列logの最後の数字を削除する
                 selectionField.pop(); //入力欄の数字を削除する
                 numOrOpe--; //numOrOpeを0にする
                 input.value = selectionField.join(''); //配列selectionFieldを',を取って入力フォームに表示する
                 }}
 });
+//演斬ボタン
 calculation.addEventListener('click', function () { //演斬をクリックしたら
     if(numOrOpe == 1) { //numOrOpeが1、数字だったら
         numOrOpe++; //numOrOpeを3にする
-        let selectedElement = document.getElementsByClassName('selected');
+        let selectedElement = document.getElementsByClassName('selected'); //selectedクラス、押されていたボタン
         if (0 < selectedElement.length) {
-                [...selectedElement].forEach(function(v){ return v.remove() })
+                [...selectedElement].forEach(function(v){ return v.remove() }) //を消す
+                let compare = (a, b) => {return b - a;} //
+                numLog.sort(compare);
+                opeLog.sort(compare);
+                numLog.forEach(element => attackFormulaNum.splice(element, 1,));
+                opeLog.forEach(element => attackFormulaOpe.splice(element, 1,));
+                eraseAllButtons();
+                buttonSetting ();
             }
         let result = input.value.replace(/×/g, '*').replace(/÷/g, '/'); //入力された式を変換
         let calculationResult = Function('return ('+result+');') (); //式を計算
-        damageCaused.innerText = calculationResult; //htmlに結果を入力
-        let rivalLifeConversion = rivalLife.innerText.split('/').map(Number);
-        let remainingHp = rivalLifeConversion[0] - calculationResult
-        if (0 < remainingHp) {
-            rivalLife.innerText = remainingHp + '/' + rivalLifeConversion[1];
-            rivalDamageDisplay(0);
-        } else {
-            rivalLife.innerText = 0 + '/' + rivalLifeConversion[1];
-            rivalDamageDisplay(4);
-            console.log('yaatta');
+        let damageCaused = calculationResult - rivalStatus[2];
+        if (0 > damageCaused) {
+            damageCaused = 0;
+        }
+        damageCausedDisplay.innerText = damageCaused; //htmlに結果を入力
+        rivalStatus[4] = rivalStatus[4] - damageCaused; //残ったHP
+        if (0 < rivalStatus[4]) { //相手HPが残っていたら
+            rivalLife.innerText = rivalStatus[4]; //残りHPを表示
+            let rivalLifeRatio = rivalStatus[4] / rivalStatus[0] * 100; //残りHP率
+            rivalLifeBar.style.width = rivalLifeRatio + '%'; //HPバーを残りHP率に変える
+            rivalDamageDisplay(); //ダメージを表示
+            damageReceivedDisplay.innerText = rivalStatus[1];
+            setTimeout(() => {
+                damageReceivedHtml.style.visibility = 'visible'; //htmlを表示
+                myStatus[2] = myStatus[2] - rivalStatus[1];
+                if (0 < myStatus[2]) {
+                    myHp.innerText = myStatus[2];
+                    let myHpRatio = myStatus[2] / myStatus[1] * 100;
+                    myHpBar.style.width = myHpRatio + '%';
+                } else {
+                    myHp.innerText = 0;
+                    myHpBar.style.width = 0 + '%';
+                    setTimeout(() => {
+                    myStatus[0]--;
+                    myStatus[2] = myStatus[1];
+                    myLife.innerText = myStatus[0];
+                    myHp.innerText = myStatus[2];
+                    myHpBar.style.width = 100 + '%'
+                    if (0 == myStatus[0]) {
+                        console.log('ゲームオーバー');
+                    }
+                    }, 3000);
+                }
+                setTimeout(() => { //1.5秒後に
+                    damageReceivedHtml.style.visibility = 'hidden'; //ダメージの表示を消す
+            numOrOpe = 0; //切り替えスイッチを0にする
+                    }, 1500);
+            }, 3000);
+        } else { //相手HPがなくなったら
+            rivalLife.innerText = 0 //残りHPを0にして表示
+            rivalLifeBar.style.width = 0 + '%'; //HPバーを0にする
+            numOrOpe = 4; //切り替えスイッチを4にする
+            rivalDamageDisplay(); //ダメージを表示
+            setTimeout(() => { //1.5秒後に
+                stairsScreen.style.visibility = 'visible'; //階段画面を表示
+                goUpTheStairs (); //階段を上る
+                numOrOpe = 0; //切り替えスイッチを0にする
+                console.log('yaatta');
+            }, 1500);
         }
     }
 })
 }
 // attackFormulaNum = attackFormula.map(Number);
 
-gameStart.addEventListener('click', function () {
-    startMenu.style.visibility = 'hidden';
+gameStart.addEventListener('click', function () { //ゲームスタートを押したら
+    startMenu.style.visibility = 'hidden'; //スタート画面を消す
+    goUpTheStairs (); //階段を上る
+
+setting ();
 // 数字と演算子を分ける
 sorting ();
 // 数字と演算子の処理
 buttonSetting ();
+//固定ボタンセット
+fixedButtonSetting ()
 })

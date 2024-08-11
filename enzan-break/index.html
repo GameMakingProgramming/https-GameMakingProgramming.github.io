@@ -17,8 +17,8 @@
     </div>
 
     <!-- 階段画面 -->
-     <div>
-
+     <div class="stairs" id="stairsScreen">
+        <p><span id="stairs"></span>階</p>
      </div>
 
     <!-- バトル画面 -->
@@ -26,13 +26,13 @@
         <!-- 敵エリア -->
         <div class="rival-area">
             <!-- 階数 -->
-            <div class="floor">階数</div>
+            <div class="floor"><span id="floor"></span>階</div>
             <!-- ステータス -->
             <div class="status">
                 <ul>
-                    <li>攻撃力</li>
-                    <li>防御力</li>
-                    <li>弱点</li>
+                    <li>攻撃力:<span id="rivalAttack"></span></li>
+                    <li>防御力:<span id="rivalDefense"></span></li>
+                    <li>弱点:<span id="rivalWeakness"></span></li>
                 </ul>
             </div>
             <!-- 敵キャラ -->
@@ -40,18 +40,24 @@
                 <img src="./image/fantasy_game_character_slime.png" alt="">
             </div>
             <!-- 敵HP -->
-            <div class="rival-life" id="rivalLife">20/20</div>
+            <div class="rival-life">
+                <div class="rival-life-bar" id="rivalLifeBar"></div>
+                <p><span id="rivalLife"></span>/<span id="rivalMaxLife"></span></p>
+            </div>
             <!-- 与えたダメージ -->
-             <div class="damage-caused" id="damage">
-                <p id="damageCaused"></p>
+             <div class="damage-caused" id="damageCausedHtml">
+                <p id="damageCausedDisplay"></p>
              </div>
         </div>
         <!-- 自エリア -->
         <div class="my-area">
             <!-- 自HP -->
             <div class="my-life">
-                <div class="heart">♥♥♥</div>
-                <div class="my-hp">20/20</div>
+                <div class="heart" id="myLife">♥♥♥</div>
+                <div class="my-hp">
+                    <div class="my-hp-bar" id="myHpBar"></div>
+                    <p><span id="myHp"></span>/<span id="myMaxHp"></span></p>
+                </div>
             </div>
             <!-- 攻撃式 -->
             <div class="attack-formula">
@@ -65,6 +71,10 @@
             <!-- 演算子スペース -->
             <div class="operator-space" id="operator">
             </div>
+            <!-- 受けたダメージ -->
+            <div class="damage-received" id="damageReceivedHtml">
+                <p id="damageReceivedDisplay"></p>
+             </div>
         </div>
     </div>
     <script src="main.js"></script>
