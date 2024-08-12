@@ -169,6 +169,7 @@ body {
 .my-hp p {
     position: absolute;
     margin-left: 5%;
+    font-size: 5vw;
     font-weight: bold;
     color: #252525;
 }
@@ -229,6 +230,7 @@ body {
     margin: 1%;
     width: 12vw;
     height: 12vw;
+    font-size: 6vw;
     display: inline-block;
     text-decoration: none;
     background-color: #488c98;
@@ -253,7 +255,7 @@ body {
 }
 .operator-space a {
     margin: 1%;
-    font-size: 200%;
+    font-size: 10vw;
     width: 12vw;
     height: 12vw;
     display: inline-block;
@@ -276,10 +278,17 @@ body {
         width: auto;
         height: 100vh;
     }
-    .numbers-space a, .operator-space a {
+    .numbers-space a {
         width: 6vh;
         height: 6vh;
         line-height: 6vh;
+        font-size: 3vh;
+    }
+    .operator-space a {
+        width: 6vh;
+        height: 6vh;
+        line-height: 6vh;
+        font-size: 5vh;
     }
 }
 
