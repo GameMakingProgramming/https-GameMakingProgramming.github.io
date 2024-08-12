@@ -1,4 +1,3 @@
-
 const startMenu = document.getElementById('startMenu');
 const gameStart = document.getElementById('gameStart');
 const stairs = document.getElementById('stairs');
@@ -86,7 +85,7 @@ function random (a, b) {
 }
 
 //アイテム入手
-//数字を配列にa個追加
+//数字a個と演算子b個を配列に追加して表示させる
 function getItem (a,b) {
     for (let index = 0; index < a; index++) {
         if (0 == random(10,0)) {
@@ -117,8 +116,6 @@ function getItem (a,b) {
     }
 }
 
-//数字a個と演算子b個を配列に追加して表示させる
-getItem (7, 5);
 
 //ボタンを削除する
 function eraseAllButtons() {
@@ -194,8 +191,6 @@ calculation.addEventListener('click', function () { //演斬をクリックし�
                 opeLog.sort(compare);
                 numLog.forEach(element => attackFormulaNum.splice(element, 1,));
                 opeLog.forEach(element => attackFormulaOpe.splice(element, 1,));
-                eraseAllButtons();
-                buttonSetting ();
             }
         let result = input.value.replace(/×/g, '*').replace(/÷/g, '/'); //入力された式を変換
         let calculationResult = Function('return ('+result+');') (); //式を計算
@@ -234,7 +229,12 @@ calculation.addEventListener('click', function () { //演斬をクリックし�
                 }
                 setTimeout(() => { //1.5秒後に
                     damageReceivedHtml.style.visibility = 'hidden'; //ダメージの表示を消す
-            numOrOpe = 0; //切り替えスイッチを0にする
+                    numOrOpe = 0; //切り替えスイッチを0にする
+                    setTimeout(() => {
+                        getItem(3,2);
+                        eraseAllButtons();
+                        buttonSetting ();
+                    }, 1000);
                     }, 1500);
             }, 3000);
         } else { //相手HPがなくなったら
@@ -244,6 +244,11 @@ calculation.addEventListener('click', function () { //演斬をクリックし�
             rivalDamageDisplay(); //ダメージを表示
             setTimeout(() => { //1.5秒後に
                 stairsScreen.style.visibility = 'visible'; //階段画面を表示
+                getItem(3,2);
+                eraseAllButtons();
+                buttonSetting ();
+                rivalStatus = [30, 5, 5, 0, 30];
+                rivalLifeBar.style.width = 100 + '%';
                 goUpTheStairs (); //階段を上る
                 numOrOpe = 0; //切り替えスイッチを0にする
                 console.log('yaatta');
@@ -258,6 +263,7 @@ gameStart.addEventListener('click', function () { //ゲームスタートを押�
     startMenu.style.visibility = 'hidden'; //スタート画面を消す
     goUpTheStairs (); //階段を上る
 
+getItem (8, 4);
 setting ();
 // // 数字と演算子を分ける
 // sorting ();
