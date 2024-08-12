@@ -227,14 +227,13 @@ body {
 }
 .numbers-space a {
     margin: 1%;
-    font-size: 200%;
-    width: 2.9rem;
-    height: 2.9rem;
+    width: 12vw;
+    height: 12vw;
     display: inline-block;
     text-decoration: none;
     background-color: #488c98;
     color: #FFF;
-    line-height: 2.9rem;
+    line-height: 12vw;
     border-radius: 50%;
     text-align: center;
     font-weight: 900;
@@ -255,13 +254,13 @@ body {
 .operator-space a {
     margin: 1%;
     font-size: 200%;
-    width: 2.9rem;
-    height: 2.9rem;
+    width: 12vw;
+    height: 12vw;
     display: inline-block;
     text-decoration: none;
     background-color: #65984a;
     color: #FFF;
-    line-height: 2.9rem;
+    line-height: 12vw;
     border-radius: 50%;
     text-align: center;
     font-weight: 900;
@@ -276,6 +275,11 @@ body {
     .start-menu, .stairs, .battle-area {
         width: auto;
         height: 100vh;
+    }
+    .numbers-space a, .operator-space a {
+        width: 6vh;
+        height: 6vh;
+        line-height: 6vh;
     }
 }
 

@@ -1,3 +1,4 @@
+
 const startMenu = document.getElementById('startMenu');
 const gameStart = document.getElementById('gameStart');
 const stairs = document.getElementById('stairs');
@@ -24,7 +25,9 @@ const myMaxHp = document.getElementById('myMaxHp');
 const myHp = document.getElementById('myHp');
 const myHpBar = document.getElementById('myHpBar');
 
-let attackFormula = [1, '+', 2, '+', 3, 4, 5, 6, '-', '×', '÷', 7, 8,]; //手札
+// let attackFormula = []; //手札
+let attackFormulaNum = [];
+let attackFormulaOpe = [];
 let selectionField = []; //選んだ手札
 let numOrOpe = [0]; //切り替えスイッチ
 let numLog = []; //選んだ数字の手札の位置
@@ -32,7 +35,7 @@ let opeLog = []; //選んだ演算子の手札の位置
 let numberOfFloors = [0]; //階数
 stairs.innerText = numberOfFloors; //0階を表示
 
-let rivalStatus = [20, 10, 5, 0, 20] //HP[0], 攻撃[1], 防御[2], 弱点[3], 残りHP[4]
+let rivalStatus = [20, 3, 5, 0, 20] //HP[0], 攻撃[1], 防御[2], 弱点[3], 残りHP[4]
 let myStatus = [3, 20, 20] //ライフ[0], HP[1] ,残りHP[2]
 
 //セッティング
@@ -59,11 +62,12 @@ function goUpTheStairs () {
     }, 1000);
 }
 
-// 数字と演算子を分ける
-function sorting () {
-    attackFormulaNum = attackFormula.filter((x) => {return typeof x === 'number'}) //attackFormulaから数字を取り出す
-    attackFormulaOpe = attackFormula.filter((x) => {return typeof x === 'string'}) //attackFormulaから演算子を取り出す
-}
+// // 数字と演算子を分ける
+// function sorting () {
+//     attackFormulaNum = attackFormula.filter((x) => {return typeof x === 'number'}) //attackFormulaから数字を取り出す
+//     attackFormulaOpe = attackFormula.filter((x) => {return typeof x === 'string'}) //attackFormulaから演算子を取り出す
+// }
+
 //与えたダメージの表示
 function rivalDamageDisplay () { 
     selectionField = []; //選んだ手札をリセット
@@ -75,6 +79,46 @@ function rivalDamageDisplay () {
         damageCausedHtml.style.visibility = 'hidden'; //ダメージの表示を消す
     }, 1500);
 }
+
+//ランダム計算
+function random (a, b) {
+    return Math.floor(Math.random() * a + b);
+}
+
+//アイテム入手
+//数字を配列にa個追加
+function getItem (a,b) {
+    for (let index = 0; index < a; index++) {
+        if (0 == random(10,0)) {
+            attackFormulaNum.push(random(9,1) / 10);
+        } else {
+            attackFormulaNum.push(random(9,1));
+        }
+    }
+    for (let index = 0; index < b; index++) {
+        switch (random(5,0)) {
+            case 0:
+            case 1:
+                attackFormulaOpe.push('+');
+                break;
+        
+            case 2:
+                attackFormulaOpe.push('-');
+                break;
+
+            case 3:
+                attackFormulaOpe.push('×');
+                break;
+        
+            case 4:
+                attackFormulaOpe.push('÷');
+                break;
+        }
+    }
+}
+
+//数字a個と演算子b個を配列に追加して表示させる
+getItem (7, 5);
 
 //ボタンを削除する
 function eraseAllButtons() {
@@ -215,8 +259,8 @@ gameStart.addEventListener('click', function () { //ゲームスタートを押�
     goUpTheStairs (); //階段を上る
 
 setting ();
-// 数字と演算子を分ける
-sorting ();
+// // 数字と演算子を分ける
+// sorting ();
 // 数字と演算子の処理
 buttonSetting ();
 //固定ボタンセット
