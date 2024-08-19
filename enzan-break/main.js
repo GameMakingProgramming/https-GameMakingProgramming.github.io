@@ -4,6 +4,7 @@ const stairs = document.getElementById('stairs');
 const stairsScreen = document.getElementById('stairsScreen');
 const input = document.getElementById('input');
 const numbers = document.getElementById('numbers');
+const parentheses = document.getElementById('parentheses');
 const operator = document.getElementById('operator');
 const backSpace = document.getElementById('back-space');
 const calculation = document.getElementById('calculation');
@@ -25,17 +26,20 @@ const myHp = document.getElementById('myHp');
 const myHpBar = document.getElementById('myHpBar');
 
 // let attackFormula = []; //手札
-let attackFormulaNum = [];
-let attackFormulaOpe = [];
+let attackFormulaNum = []; //数字の手札
+let attackFormulaOpe = []; //演算子の手札
 let selectionField = []; //選んだ手札
 let numOrOpe = [0]; //切り替えスイッチ
 let numLog = []; //選んだ数字の手札の位置
 let opeLog = []; //選んだ演算子の手札の位置
+let parenthesesCount = [0]; //（）の数のカウンター
 let numberOfFloors = [0]; //階数
 stairs.innerText = numberOfFloors; //0階を表示
 
-let rivalStatus = [20, 3, 5, 0, 20] //HP[0], 攻撃[1], 防御[2], 弱点[3], 残りHP[4]
+let rivalStatus = [20, 3, 0, 0, 20] //HP[0], 攻撃[1], 防御[2], 弱点[3], 残りHP[4]
 let myStatus = [3, 20, 20] //ライフ[0], HP[1] ,残りHP[2]
+
+
 
 //セッティング
 function setting () {
@@ -76,7 +80,7 @@ function rivalDamageDisplay () {
     damageCausedHtml.style.visibility = 'visible'; //htmlを表示
     setTimeout(() => { //1.5秒後に
         damageCausedHtml.style.visibility = 'hidden'; //ダメージの表示を消す
-    }, 1500);
+    }, 1000);
 }
 
 //ランダム計算
@@ -86,7 +90,7 @@ function random (a, b) {
 
 //アイテム入手
 //数字a個と演算子b個を配列に追加して表示させる
-function getItem (a,b) {
+function getItem (a, b) {
     for (let index = 0; index < a; index++) {
         if (0 == random(10,0)) {
             attackFormulaNum.push(random(9,1) / 10);
@@ -134,11 +138,12 @@ attackFormulaNum.forEach((value, index) => {
     const cards = document.createElement('a'); //aタグを作る
     cards.innerText = value; //aタグにattackFormulaNumを入れる
     numbers.appendChild(cards); //aタグをnumbersの子要素にする
+
     cards.addEventListener("click", function () {//aタグをクリックしたら
     if (numOrOpe == 0 && !cards.classList.contains('selected')) { //numOrOpeが0でボタンが押されていなかったら
         numLog.push(index); //logに入力した数字の配置を記録する
         cards.classList.add('selected'); //クリックしたaタグにselectedのクラスをつける
-        numOrOpe++; //numOrOpeを1にする
+        numOrOpe = 1; //numOrOpeを1にする
         selectionField.push(cards.textContent); //配列selectionFieldにクリックしたaタグの内容を入れる
         input.value = selectionField.join(''); //配列selectionFieldを',を取って入力フォームに表示する
     }
@@ -149,39 +154,75 @@ attackFormulaOpe.forEach((value, index) => {
     const cards = document.createElement('a'); //aタグを作る
     cards.innerText = value; //aタグにattackFormulaOpeを入れる
     operator.appendChild(cards); //aタグをoperatorの子要素にする
+
     cards.addEventListener("click", function () { //aタグをクリックしたら
     if (numOrOpe == 1 && !cards.classList.contains('selected')) { //numOrOpeが1でボタンが押されていなかったら
-            opeLog.push(index); //logに入力した演算子の配置を記録する
+        opeLog.push(index); //logに入力した演算子の配置を記録する
         cards.classList.add('selected'); //クリックしたaタグにselectedのクラスをつける
-        numOrOpe--; //numOrOpeを0にする
+        numOrOpe = 0; //numOrOpeを0にする
         selectionField.push(cards.textContent); //配列selectionFieldにクリックしたaタグの内容を入れる
         input.value = selectionField.join(''); //配列selectionFieldを',を取って入力フォームに表示する
-    }
-    });
+} else if (numOrOpe == 0 && !cards.classList.contains('selected') && cards.textContent == '-' && 
+           selectionField[selectionField.length-1] !== '-' ) { //numOrOpeが0でボタンが押されていなくマイナスが連続していなかったら
+            opeLog.push(index); //logに入力した演算子の配置を記録する
+        cards.classList.add('selected'); //クリックしたaタグにselectedのクラスをつける
+        selectionField.push(cards.textContent); //配列selectionFieldにクリックしたaタグの内容を入れる
+        input.value = selectionField.join(''); //配列selectionFieldを',を取って入力フォームに表示する
+}});
 });
 }
 //固定ボタンセット
 function fixedButtonSetting () {
+//（）ボタン
+parentheses.addEventListener('click', function () {
+           if (numOrOpe == 0) {
+            parenthesesCount++;
+            selectionField.push('(');
+            input.value = selectionField.join('');
+    } else if (numOrOpe == 1 && parenthesesCount > 0) {
+            parenthesesCount--;
+            selectionField.push(')');
+            input.value = selectionField.join('');
+    }
+})
+
 //バックスペース
 backSpace.addEventListener('click', function () { //クリックされたら
     if(selectionField[0]) { //入力欄に何も入力されていなかったら
-        if (numOrOpe == 0) { //numOrOpeが0、演算子だったら
+               if (selectionField[selectionField.length-1] == '(') {
+            selectionField.pop(); //入力欄の演算子を削除する
+            input.value = selectionField.join(''); //配列selectionFieldを',を取って入力フォームに表示する
+            parenthesesCount--;
+        } else if (selectionField[selectionField.length-1] == ')') {
+            selectionField.pop(); //入力欄の演算子を削除する
+            input.value = selectionField.join(''); //配列selectionFieldを',を取って入力フォームに表示する
+            parenthesesCount++;
+        } else if (numOrOpe == 0) { //numOrOpeが0、演算子だったら
             operator.children[opeLog[opeLog.length-1]].classList.remove('selected'); //直前に入力されたボタンのクラスを外す
             opeLog.pop(); //配列logの最後の演算子を削除する
             selectionField.pop(); //入力欄の演算子を削除する
-            numOrOpe++; //numOrOpeを1にする
             input.value = selectionField.join(''); //配列selectionFieldを',を取って入力フォームに表示する
-            } else if (numOrOpe == 1) { //numOrOpeが1、数字だったら
-                numbers.children[numLog[numLog.length-1]].classList.remove('selected'); //直前に入力されたボタンのクラスを外す
-                numLog.pop(); //配列logの最後の数字を削除する
-                selectionField.pop(); //入力欄の数字を削除する
-                numOrOpe--; //numOrOpeを0にする
-                input.value = selectionField.join(''); //配列selectionFieldを',を取って入力フォームに表示する
-                }}
+            if (!selectionField[0] || isNaN(selectionField[selectionField.length-1])) { //消した後最後が文字、もしくは空欄だったら
+                numOrOpe = 0; //numOrOpeを0にする
+            } else { //数字だったら
+                numOrOpe = 1; //numOrOpeを1にする
+            }
+        } else if (numOrOpe == 1) { //numOrOpeが1、数字だったら
+            numbers.children[numLog[numLog.length-1]].classList.remove('selected'); //直前に入力されたボタンのクラスを外す
+            numLog.pop(); //配列logの最後の数字を削除する
+            selectionField.pop(); //入力欄の数字を削除する
+            input.value = selectionField.join(''); //配列selectionFieldを',を取って入力フォームに表示する
+            if (!selectionField[0] || isNaN(selectionField[selectionField.length-1])) { //消した後最後が文字、もしくは空欄だったら
+                numOrOpe = 0; //numOrOpeを0にする
+            } else { //数字だったら
+                numOrOpe = 1; //numOrOpeを1にする
+            }
+        }
+            }
 });
 //演斬ボタン
 calculation.addEventListener('click', function () { //演斬をクリックしたら
-    if(numOrOpe == 1) { //numOrOpeが1、数字だったら
+    if(numOrOpe == 1 && parenthesesCount == 0) { //numOrOpeが1、数字だったら
         numOrOpe++; //numOrOpeを3にする
         let selectedElement = document.getElementsByClassName('selected'); //selectedクラス、押されていたボタン
         if (0 < selectedElement.length) {
@@ -252,7 +293,7 @@ calculation.addEventListener('click', function () { //演斬をクリックし�
                 goUpTheStairs (); //階段を上る
                 numOrOpe = 0; //切り替えスイッチを0にする
                 console.log('yaatta');
-            }, 1500);
+            }, 3000);
         }
     }
 })
@@ -272,3 +313,23 @@ buttonSetting ();
 //固定ボタンセット
 fixedButtonSetting ()
 })
+
+/*
+//バックスペース
+backSpace.addEventListener('click', function () { //クリックされたら
+    if(selectionField[0]) { //入力欄に何も入力されていなかったら
+        if (numOrOpe == 0) { //numOrOpeが0、演算子だったら
+            operator.children[opeLog[opeLog.length-1]].classList.remove('selected'); //直前に入力されたボタンのクラスを外す
+            opeLog.pop(); //配列logの最後の演算子を削除する
+            selectionField.pop(); //入力欄の演算子を削除する
+            numOrOpe++; //numOrOpeを1にする
+            input.value = selectionField.join(''); //配列selectionFieldを',を取って入力フォームに表示する
+            } else if (numOrOpe == 1) { //numOrOpeが1、数字だったら
+                numbers.children[numLog[numLog.length-1]].classList.remove('selected'); //直前に入力されたボタンのクラスを外す
+                numLog.pop(); //配列logの最後の数字を削除する
+                selectionField.pop(); //入力欄の数字を削除する
+                numOrOpe--; //numOrOpeを0にする
+                input.value = selectionField.join(''); //配列selectionFieldを',を取って入力フォームに表示する
+                }}
+});
+*/
