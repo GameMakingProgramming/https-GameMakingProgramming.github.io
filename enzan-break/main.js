@@ -40,6 +40,14 @@ let rivalStatus = [20, 3, 0, 0, 20] //HP[0], 攻撃[1], 防御[2], 弱点[3], �
 let myStatus = [3, 20, 20] //ライフ[0], HP[1] ,残りHP[2]
 
 
+function rivalStatusSetting() {
+    rivalStatus[0] = 30;
+    rivalStatus[1] = 5;
+    rivalStatus[2] = 0;
+    rivalStatus[3] = random(5,0);
+    rivalStatus[4] = rivalStatus[0];
+}
+
 
 //セッティング
 function setting () {
@@ -82,6 +90,21 @@ function rivalDamageDisplay () {
         damageCausedHtml.style.visibility = 'hidden'; //ダメージの表示を消す
     }, 1000);
 }
+
+function Weakness(a) {
+           if (rivalStatus[3] == 0 && 0 > a) {
+        return -2 * a;
+    } else if (rivalStatus[3] == 1) {
+        return 10 / a;
+    } else if (rivalStatus[3] == 2 && !Number.isInteger(a)) {
+        return 10 * a;
+    } else if (rivalStatus[3] == 3 && a % 2 == 1) {
+        return 2 * a;
+    } else {
+        return a;
+    }
+}
+
 
 //ランダム計算
 function random (a, b) {
@@ -202,7 +225,9 @@ backSpace.addEventListener('click', function () { //クリックされたら
             opeLog.pop(); //配列logの最後の演算子を削除する
             selectionField.pop(); //入力欄の演算子を削除する
             input.value = selectionField.join(''); //配列selectionFieldを',を取って入力フォームに表示する
-            if (!selectionField[0] || isNaN(selectionField[selectionField.length-1])) { //消した後最後が文字、もしくは空欄だったら
+            let selectionFieldLast = selectionField[selectionField.length-1]
+            if ((!selectionField[0] || isNaN(selectionFieldLast)) &&  //消した後最後が文字、もしくは空欄だったら
+            selectionFieldLast !== ')') { //かつ ）じゃなかったら
                 numOrOpe = 0; //numOrOpeを0にする
             } else { //数字だったら
                 numOrOpe = 1; //numOrOpeを1にする
@@ -212,7 +237,9 @@ backSpace.addEventListener('click', function () { //クリックされたら
             numLog.pop(); //配列logの最後の数字を削除する
             selectionField.pop(); //入力欄の数字を削除する
             input.value = selectionField.join(''); //配列selectionFieldを',を取って入力フォームに表示する
-            if (!selectionField[0] || isNaN(selectionField[selectionField.length-1])) { //消した後最後が文字、もしくは空欄だったら
+            let selectionFieldLast = selectionField[selectionField.length-1]
+            if ((!selectionField[0] || isNaN(selectionFieldLast)) &&  //消した後最後が文字、もしくは空欄だったら
+            selectionFieldLast !== ')') { //かつ（）じゃなかったら
                 numOrOpe = 0; //numOrOpeを0にする
             } else { //数字だったら
                 numOrOpe = 1; //numOrOpeを1にする
@@ -225,19 +252,21 @@ calculation.addEventListener('click', function () { //演斬をクリックし�
     if(numOrOpe == 1 && parenthesesCount == 0) { //numOrOpeが1、数字だったら
         numOrOpe++; //numOrOpeを3にする
         let selectedElement = document.getElementsByClassName('selected'); //selectedクラス、押されていたボタン
-        if (0 < selectedElement.length) {
-                [...selectedElement].forEach(function(v){ return v.remove() }) //を消す
-                let compare = (a, b) => {return b - a;} //
-                numLog.sort(compare);
-                opeLog.sort(compare);
-                numLog.forEach(element => attackFormulaNum.splice(element, 1,));
-                opeLog.forEach(element => attackFormulaOpe.splice(element, 1,));
+        if (0 < selectedElement.length) { //ボタンが押されたものがあったら
+                [...selectedElement].forEach(function(v){ return v.remove() }) //それを消す
+                let compare = (a, b) => {return b - a;} //大きい順に並び替える
+                numLog.sort(compare); //数字の位置ログを大きい順
+                opeLog.sort(compare); //演算子の位置ログを大きい順
+                numLog.forEach(element => attackFormulaNum.splice(element, 1,)); //後半のボタンから1つずつ削除
+                opeLog.forEach(element => attackFormulaOpe.splice(element, 1,)); 
             }
         let result = input.value.replace(/×/g, '*').replace(/÷/g, '/'); //入力された式を変換
         let calculationResult = Function('return ('+result+');') (); //式を計算
-        let damageCaused = calculationResult - rivalStatus[2];
-        if (0 > damageCaused) {
-            damageCaused = 0;
+        console.log(Weakness(calculationResult));
+        
+        let damageCaused = Weakness(calculationResult) - rivalStatus[2]; //ダメージを防御力で軽減
+        if (0 > damageCaused) { //ダメージがマイナスになったら
+            damageCaused = 0; //ダメージを0にする
         }
         damageCausedDisplay.innerText = damageCaused; //htmlに結果を入力
         rivalStatus[4] = rivalStatus[4] - damageCaused; //残ったHP
@@ -246,25 +275,25 @@ calculation.addEventListener('click', function () { //演斬をクリックし�
             let rivalLifeRatio = rivalStatus[4] / rivalStatus[0] * 100; //残りHP率
             rivalLifeBar.style.width = rivalLifeRatio + '%'; //HPバーを残りHP率に変える
             rivalDamageDisplay(); //ダメージを表示
-            damageReceivedDisplay.innerText = rivalStatus[1];
-            setTimeout(() => {
+            damageReceivedDisplay.innerText = rivalStatus[1]; // 受けたダメージをhtmlに書き込む
+            setTimeout(() => { //3秒後に
                 damageReceivedHtml.style.visibility = 'visible'; //htmlを表示
-                myStatus[2] = myStatus[2] - rivalStatus[1];
-                if (0 < myStatus[2]) {
-                    myHp.innerText = myStatus[2];
-                    let myHpRatio = myStatus[2] / myStatus[1] * 100;
-                    myHpBar.style.width = myHpRatio + '%';
-                } else {
-                    myHp.innerText = 0;
-                    myHpBar.style.width = 0 + '%';
-                    setTimeout(() => {
-                    myStatus[0]--;
-                    myStatus[2] = myStatus[1];
-                    myLife.innerText = myStatus[0];
-                    myHp.innerText = myStatus[2];
-                    myHpBar.style.width = 100 + '%'
-                    if (0 == myStatus[0]) {
-                        console.log('ゲームオーバー');
+                myStatus[2] = myStatus[2] - rivalStatus[1]; //自分のHPを減らす
+                if (0 < myStatus[2]) { //Hが残ったら
+                    myHp.innerText = myStatus[2]; //残ったHPを表示させる
+                    let myHpRatio = myStatus[2] / myStatus[1] * 100; //HPバーの割合
+                    myHpBar.style.width = myHpRatio + '%'; //HPバーを減らす
+                } else { //HPが無くなったら
+                    myHp.innerText = 0; //0を表示させる
+                    myHpBar.style.width = 0 + '%'; //HPバーを無くす
+                    setTimeout(() => { //3秒後に
+                    myStatus[0]--; //ハートを減らして
+                    myStatus[2] = myStatus[1]; //HPを最大にする
+                    myLife.innerText = myStatus[0]; //ハートを表示させる
+                    myHp.innerText = myStatus[2]; //HPを表示させる
+                    myHpBar.style.width = 100 + '%' //HPバーを最大にする
+                    if (0 == myStatus[0]) { //ハートが0になったら
+                        console.log('ゲームオーバー'); //
                     }
                     }, 3000);
                 }
@@ -287,10 +316,10 @@ calculation.addEventListener('click', function () { //演斬をクリックし�
                 stairsScreen.style.visibility = 'visible'; //階段画面を表示
                 getItem(3,2);
                 eraseAllButtons();
-                buttonSetting ();
-                rivalStatus = [30, 5, 5, 0, 30];
+                buttonSetting();
+                rivalStatusSetting();
                 rivalLifeBar.style.width = 100 + '%';
-                goUpTheStairs (); //階段を上る
+                goUpTheStairs(); //階段を上る
                 numOrOpe = 0; //切り替えスイッチを0にする
                 console.log('yaatta');
             }, 3000);
