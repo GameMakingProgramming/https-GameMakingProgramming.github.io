@@ -36,15 +36,32 @@ let parenthesesCount = [0]; //（）の数のカウンター
 let numberOfFloors = [0]; //階数
 stairs.innerText = numberOfFloors; //0階を表示
 
-let rivalStatus = [20, 3, 0, 0, 20] //HP[0], 攻撃[1], 防御[2], 弱点[3], 残りHP[4]
+let rivalStatus = [10, 3, 0, 4, 10] //HP[0], 攻撃[1], 防御[2], 弱点[3], 残りHP[4]
 let myStatus = [3, 20, 20] //ライフ[0], HP[1] ,残りHP[2]
 
 
 function rivalStatusSetting() {
-    rivalStatus[0] = 30;
-    rivalStatus[1] = 5;
-    rivalStatus[2] = 0;
-    rivalStatus[3] = random(5,0);
+    if ((numberOfFloors + 1) % 10 !== 0) {
+        rivalStatus[0] = random(31,5);
+        if (random(6,0) > 2) {
+            rivalStatus[1] = random(8,4);
+            rivalStatus[2] = random(2,0);
+        } else {
+            rivalStatus[1] = random(4,1);
+            rivalStatus[2] = random(7,3);
+        }
+        rivalStatus[3] = random(5,0);
+    } else {
+        rivalStatus[0] = random(61,30);
+        if (random(6,0) > 2) {
+            rivalStatus[1] = random(11,8);
+            rivalStatus[2] = random(2,0);
+        } else {
+            rivalStatus[1] = random(4,1);
+            rivalStatus[2] = random(10,7);
+        }
+        rivalStatus[3] = random(4,0);
+    }
     rivalStatus[4] = rivalStatus[0];
 }
 
@@ -56,10 +73,20 @@ function setting () {
     rivalLife.innerText = rivalStatus[0];
     rivalAttack.innerText = rivalStatus[1];
     rivalDefense.innerText = rivalStatus[2];
-    rivalWeakness.innerText = rivalStatus[3];
     myLife.innerText = myStatus[0];
     myMaxHp.innerText = myStatus[1];
     myHp.innerText = myStatus[2];
+    if (rivalStatus[3] == 0) {
+        rivalWeakness.innerText = 'マイナス';
+    } else if (rivalStatus[3] == 1) {
+        rivalWeakness.innerText = '小さい数';
+    } else if (rivalStatus[3] == 2) {
+        rivalWeakness.innerText = '小数点';
+    } else if (rivalStatus[3] == 3) {
+        rivalWeakness.innerText = '奇数';
+    } else if (rivalStatus[3] == 4) {
+        rivalWeakness.innerText = 'なし';
+    }
 }
 //階段を上る
 function goUpTheStairs () {
@@ -73,11 +100,6 @@ function goUpTheStairs () {
     }, 1000);
 }
 
-// // 数字と演算子を分ける
-// function sorting () {
-//     attackFormulaNum = attackFormula.filter((x) => {return typeof x === 'number'}) //attackFormulaから数字を取り出す
-//     attackFormulaOpe = attackFormula.filter((x) => {return typeof x === 'string'}) //attackFormulaから演算子を取り出す
-// }
 
 //与えたダメージの表示
 function rivalDamageDisplay () { 
@@ -108,7 +130,7 @@ function Weakness(a) {
 
 //ランダム計算
 function random (a, b) {
-    return Math.floor(Math.random() * a + b);
+    return Math.floor(Math.random() * (a - b) + b);
 }
 
 //アイテム入手
