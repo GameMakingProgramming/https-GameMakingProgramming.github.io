@@ -69,6 +69,7 @@ body {
     width: 100vmin;
     margin: 0 auto;
     aspect-ratio: 1 / 2;
+    
     /* z-index: 5; */
 }
 /* 敵エリア */
@@ -101,13 +102,36 @@ body {
     height: 8%;
     right: 5%;
     bottom: 5%;
-    background-color: rgb(110, 110, 110);
 }
 .rival-life-bar {
-    position: absolute;
+    position: absolute;    
+    background-color: rgb(110, 110, 110);
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+.rival-remaining-life-bar {
     background-color: chartreuse;
     height: 100%;
     width: 100%;
+}
+.rival-lostlife-bar {
+    height: 100%;
+    width: 0%;
+}
+.bar-animasion {    
+    background-color: red;
+    height: 100%;
+    width: 100%;
+    animation: animation forwards 1s;
+}
+@keyframes animation{
+    from{
+        width: 100%;
+    }
+    to{
+        width: 0%;
+    }
 }
 .rival-life p {
     position: absolute;

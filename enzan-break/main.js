@@ -19,11 +19,13 @@ const rivalDefense = document.getElementById('rivalDefense');
 const rivalWeakness = document.getElementById('rivalWeakness');
 const rivalMAxLife = document.getElementById('rivalMAxLife');
 const rivalLife = document.getElementById('rivalLife');
-const rivalLifeBar = document.getElementById('rivalLifeBar');
+const rivalRemainingLifeBar = document.getElementById('rivalRemainingLifeBar');
+const rivalLostlifeBar = document.getElementById('rivalLostlifeBar');
 const myLife = document.getElementById('myLife');
 const myMaxHp = document.getElementById('myMaxHp');
 const myHp = document.getElementById('myHp');
 const myHpBar = document.getElementById('myHpBar');
+const barAnimasion = document.getElementById('barAnimasion');
 
 // let attackFormula = []; //手札
 let attackFormulaNum = []; //数字の手札
@@ -178,6 +180,7 @@ function eraseAllButtons() {
 
 // 数字と演算子の処理
 function buttonSetting () {
+    barAnimasion.classList.remove('bar-animasion');
 // 数字
 attackFormulaNum.forEach((value, index) => {
     const cards = document.createElement('a'); //aタグを作る
@@ -282,10 +285,9 @@ calculation.addEventListener('click', function () { //演斬をクリックし�
                 numLog.forEach(element => attackFormulaNum.splice(element, 1,)); //後半のボタンから1つずつ削除
                 opeLog.forEach(element => attackFormulaOpe.splice(element, 1,)); 
             }
+        let rivalLifeRatio = rivalStatus[4] / rivalStatus[0] * 100; //残りHP率
         let result = input.value.replace(/×/g, '*').replace(/÷/g, '/'); //入力された式を変換
         let calculationResult = Function('return ('+result+');') (); //式を計算
-        console.log(Weakness(calculationResult));
-        
         let damageCaused = Weakness(calculationResult) - rivalStatus[2]; //ダメージを防御力で軽減
         if (0 > damageCaused) { //ダメージがマイナスになったら
             damageCaused = 0; //ダメージを0にする
@@ -294,8 +296,11 @@ calculation.addEventListener('click', function () { //演斬をクリックし�
         rivalStatus[4] = rivalStatus[4] - damageCaused; //残ったHP
         if (0 < rivalStatus[4]) { //相手HPが残っていたら
             rivalLife.innerText = rivalStatus[4]; //残りHPを表示
-            let rivalLifeRatio = rivalStatus[4] / rivalStatus[0] * 100; //残りHP率
-            rivalLifeBar.style.width = rivalLifeRatio + '%'; //HPバーを残りHP率に変える
+            let rivalRemainingLifeRatio = rivalStatus[4] / rivalStatus[0] * 100; //残りHP率
+            let rivalLostLifeRatio = rivalLifeRatio - rivalRemainingLifeRatio;
+            rivalRemainingLifeBar.style.width = rivalRemainingLifeRatio + '%'; //HPバーを残りHP率に変える
+            rivalLostlifeBar.style.width = rivalLostLifeRatio + '%';
+            barAnimasion.classList.add('bar-animasion');
             rivalDamageDisplay(); //ダメージを表示
             damageReceivedDisplay.innerText = rivalStatus[1]; // 受けたダメージをhtmlに書き込む
             setTimeout(() => { //3秒後に
@@ -331,7 +336,9 @@ calculation.addEventListener('click', function () { //演斬をクリックし�
             }, 3000);
         } else { //相手HPがなくなったら
             rivalLife.innerText = 0 //残りHPを0にして表示
-            rivalLifeBar.style.width = 0 + '%'; //HPバーを0にする
+            rivalRemainingLifeBar.style.width = 0 + '%'; //HPバーを0にする
+            rivalLostlifeBar.style.width = rivalLifeRatio + '%';
+            barAnimasion.classList.add('bar-animasion');
             numOrOpe = 4; //切り替えスイッチを4にする
             rivalDamageDisplay(); //ダメージを表示
             setTimeout(() => { //1.5秒後に
@@ -340,7 +347,8 @@ calculation.addEventListener('click', function () { //演斬をクリックし�
                 eraseAllButtons();
                 buttonSetting();
                 rivalStatusSetting();
-                rivalLifeBar.style.width = 100 + '%';
+                rivalRemainingLifeBar.style.width = 100 + '%';
+                rivalLostlifeBar.style.width = 0 + '%';
                 goUpTheStairs(); //階段を上る
                 numOrOpe = 0; //切り替えスイッチを0にする
                 console.log('yaatta');
