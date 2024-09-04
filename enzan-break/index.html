@@ -62,13 +62,7 @@
                     <p><span id="myHp"></span>/<span id="myMaxHp"></span></p>
                 </div>
             </div>
-            <!-- 攻撃式 -->
-            <div class="attack-formula">
-                <input id="input" type="text" readonly>
-                <button id="parentheses">( )</button>
-                <button id="back-space">☒</button>
-                <button id="calculation">演斬</button>
-            </div>
+
             <!-- 数字スペース -->
             <div class="numbers-space" id="numbers">
             </div>
@@ -79,7 +73,20 @@
             <div class="damage-received" id="damageReceivedHtml">
                 <p id="damageReceivedDisplay"></p>
              </div>
-        </div>
+            </div>
+            <!-- 攻撃式 -->
+                <div class="attack-formula">
+                    <!-- <input id="input" type="text" readonly> -->
+                     <div class="katana" id="katana">
+                        <img src="./image/katana.png" alt="">
+                        <p id="input"></p>
+                        <button id="calculation">演斬</button>
+                     </div>
+                    <div class="btn">
+                        <button id="parentheses">( )</button>
+                        <button id="back-space">☒</button>
+                    </div>
+                </div>
     </div>
     <script src="main.js"></script>
 </body>

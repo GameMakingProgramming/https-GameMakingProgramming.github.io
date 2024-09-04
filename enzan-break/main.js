@@ -75,7 +75,7 @@ function setting () {
     rivalLife.innerText = rivalStatus[0];
     rivalAttack.innerText = rivalStatus[1];
     rivalDefense.innerText = rivalStatus[2];
-    myLife.innerText = myStatus[0];
+    // myLife.innerText = myStatus[0];
     myMaxHp.innerText = myStatus[1];
     myHp.innerText = myStatus[2];
     if (rivalStatus[3] == 0) {
@@ -108,7 +108,7 @@ function rivalDamageDisplay () {
     selectionField = []; //選んだ手札をリセット
     numLog = []; //選んだ数字の手札の位置
     opeLog = []; //選んだ演算子の手札の位置
-    input.value = ''; //入力フォームをリセット
+    input.innerText = ''; //入力フォームをリセット
     damageCausedHtml.style.visibility = 'visible'; //htmlを表示
     setTimeout(() => { //1.5秒後に
         damageCausedHtml.style.visibility = 'hidden'; //ダメージの表示を消す
@@ -193,7 +193,7 @@ attackFormulaNum.forEach((value, index) => {
         cards.classList.add('selected'); //クリックしたaタグにselectedのクラスをつける
         numOrOpe = 1; //numOrOpeを1にする
         selectionField.push(cards.textContent); //配列selectionFieldにクリックしたaタグの内容を入れる
-        input.value = selectionField.join(''); //配列selectionFieldを',を取って入力フォームに表示する
+        input.innerText = selectionField.join(''); //配列selectionFieldを',を取って入力フォームに表示する
     }
     });
 });
@@ -209,13 +209,13 @@ attackFormulaOpe.forEach((value, index) => {
         cards.classList.add('selected'); //クリックしたaタグにselectedのクラスをつける
         numOrOpe = 0; //numOrOpeを0にする
         selectionField.push(cards.textContent); //配列selectionFieldにクリックしたaタグの内容を入れる
-        input.value = selectionField.join(''); //配列selectionFieldを',を取って入力フォームに表示する
+        input.innerText = selectionField.join(''); //配列selectionFieldを',を取って入力フォームに表示する
 } else if (numOrOpe == 0 && !cards.classList.contains('selected') && cards.textContent == '-' && 
            selectionField[selectionField.length-1] !== '-' ) { //numOrOpeが0でボタンが押されていなくマイナスが連続していなかったら
             opeLog.push(index); //logに入力した演算子の配置を記録する
         cards.classList.add('selected'); //クリックしたaタグにselectedのクラスをつける
         selectionField.push(cards.textContent); //配列selectionFieldにクリックしたaタグの内容を入れる
-        input.value = selectionField.join(''); //配列selectionFieldを',を取って入力フォームに表示する
+        input.innerText = selectionField.join(''); //配列selectionFieldを',を取って入力フォームに表示する
 }});
 });
 }
@@ -226,11 +226,11 @@ parentheses.addEventListener('click', function () {
            if (numOrOpe == 0) {
             parenthesesCount++;
             selectionField.push('(');
-            input.value = selectionField.join('');
+            input.innerText = selectionField.join('');
     } else if (numOrOpe == 1 && parenthesesCount > 0) {
             parenthesesCount--;
             selectionField.push(')');
-            input.value = selectionField.join('');
+            input.innerText = selectionField.join('');
     }
 })
 
@@ -239,17 +239,17 @@ backSpace.addEventListener('click', function () { //クリックされたら
     if(selectionField[0]) { //入力欄に何も入力されていなかったら
                if (selectionField[selectionField.length-1] == '(') {
             selectionField.pop(); //入力欄の演算子を削除する
-            input.value = selectionField.join(''); //配列selectionFieldを',を取って入力フォームに表示する
+            input.innerText = selectionField.join(''); //配列selectionFieldを',を取って入力フォームに表示する
             parenthesesCount--;
         } else if (selectionField[selectionField.length-1] == ')') {
             selectionField.pop(); //入力欄の演算子を削除する
-            input.value = selectionField.join(''); //配列selectionFieldを',を取って入力フォームに表示する
+            input.innerText = selectionField.join(''); //配列selectionFieldを',を取って入力フォームに表示する
             parenthesesCount++;
         } else if (numOrOpe == 0) { //numOrOpeが0、演算子だったら
             operator.children[opeLog[opeLog.length-1]].classList.remove('selected'); //直前に入力されたボタンのクラスを外す
             opeLog.pop(); //配列logの最後の演算子を削除する
             selectionField.pop(); //入力欄の演算子を削除する
-            input.value = selectionField.join(''); //配列selectionFieldを',を取って入力フォームに表示する
+            input.innerText = selectionField.join(''); //配列selectionFieldを',を取って入力フォームに表示する
             let selectionFieldLast = selectionField[selectionField.length-1]
             if ((!selectionField[0] || isNaN(selectionFieldLast)) &&  //消した後最後が文字、もしくは空欄だったら
             selectionFieldLast !== ')') { //かつ ）じゃなかったら
@@ -261,7 +261,7 @@ backSpace.addEventListener('click', function () { //クリックされたら
             numbers.children[numLog[numLog.length-1]].classList.remove('selected'); //直前に入力されたボタンのクラスを外す
             numLog.pop(); //配列logの最後の数字を削除する
             selectionField.pop(); //入力欄の数字を削除する
-            input.value = selectionField.join(''); //配列selectionFieldを',を取って入力フォームに表示する
+            input.innerText = selectionField.join(''); //配列selectionFieldを',を取って入力フォームに表示する
             let selectionFieldLast = selectionField[selectionField.length-1]
             if ((!selectionField[0] || isNaN(selectionFieldLast)) &&  //消した後最後が文字、もしくは空欄だったら
             selectionFieldLast !== ')') { //かつ（）じゃなかったら
@@ -286,14 +286,18 @@ calculation.addEventListener('click', function () { //演斬をクリックし�
                 opeLog.forEach(element => attackFormulaOpe.splice(element, 1,)); 
             }
         let rivalLifeRatio = rivalStatus[4] / rivalStatus[0] * 100; //残りHP率
-        let result = input.value.replace(/×/g, '*').replace(/÷/g, '/'); //入力された式を変換
+        let result = input.innerText.replace(/×/g, '*').replace(/÷/g, '/'); //入力された式を変換
         let calculationResult = Function('return ('+result+');') (); //式を計算
+        input.innerText = calculationResult;
         let damageCaused = Weakness(calculationResult) - rivalStatus[2]; //ダメージを防御力で軽減
         if (0 > damageCaused) { //ダメージがマイナスになったら
             damageCaused = 0; //ダメージを0にする
         }
         damageCausedDisplay.innerText = damageCaused; //htmlに結果を入力
         rivalStatus[4] = rivalStatus[4] - damageCaused; //残ったHP
+        setTimeout(() => {
+        katana.classList.add('katana-animation');
+        setTimeout(() => { //300後に
         if (0 < rivalStatus[4]) { //相手HPが残っていたら
             rivalLife.innerText = rivalStatus[4]; //残りHPを表示
             let rivalRemainingLifeRatio = rivalStatus[4] / rivalStatus[0] * 100; //残りHP率
@@ -354,6 +358,8 @@ calculation.addEventListener('click', function () { //演斬をクリックし�
                 console.log('yaatta');
             }, 3000);
         }
+    }, 400);
+}, 600);
     }
 })
 }
@@ -392,3 +398,8 @@ backSpace.addEventListener('click', function () { //クリックされたら
                 }}
 });
 */
+
+// const katana = document.getElementById('katana');
+// katana.addEventListener('click', () => {
+//     katana.classList.toggle('katana-animation');
+// })
