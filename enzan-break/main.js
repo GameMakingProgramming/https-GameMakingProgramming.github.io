@@ -180,7 +180,9 @@ function eraseAllButtons() {
 
 // 数字と演算子の処理
 function buttonSetting () {
+//アニメーションリセット
     barAnimasion.classList.remove('bar-animasion');
+    katana.classList.remove('katana-animation');
 // 数字
 attackFormulaNum.forEach((value, index) => {
     const cards = document.createElement('a'); //aタグを作る
@@ -297,7 +299,7 @@ calculation.addEventListener('click', function () { //演斬をクリックし�
         rivalStatus[4] = rivalStatus[4] - damageCaused; //残ったHP
         setTimeout(() => {
         katana.classList.add('katana-animation');
-        setTimeout(() => { //300後に
+        setTimeout(() => { //500後に
         if (0 < rivalStatus[4]) { //相手HPが残っていたら
             rivalLife.innerText = rivalStatus[4]; //残りHPを表示
             let rivalRemainingLifeRatio = rivalStatus[4] / rivalStatus[0] * 100; //残りHP率
@@ -358,7 +360,7 @@ calculation.addEventListener('click', function () { //演斬をクリックし�
                 console.log('yaatta');
             }, 3000);
         }
-    }, 400);
+    }, 500);
 }, 600);
     }
 })

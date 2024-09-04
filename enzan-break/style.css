@@ -121,7 +121,7 @@ body {
     width: 0%;
 }
 .bar-animasion {    
-    background-color: red;
+    background-color: rgb(252, 34, 34);
     height: 100%;
     width: 100%;
     animation: bar-animation forwards 1s;
@@ -234,7 +234,7 @@ body {
     /* background-color: #222e32; */
 }
 .katana-animation{
-    animation: katana-animation forwards 2s;
+    animation: katana-animation forwards 3s;
     transform-origin: bottom right;
 }
 @keyframes katana-animation {
