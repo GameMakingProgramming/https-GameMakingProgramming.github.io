@@ -255,7 +255,7 @@ body {
     position: absolute;
     left: 0%;
     bottom: 20%;
-    font-size: 110%;
+    font-size: 5vw;
     font-weight: bold;
     -webkit-text-stroke: 0.3px #ffffff76;
     overflow-x: auto;
