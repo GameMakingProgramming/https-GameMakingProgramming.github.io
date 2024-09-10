@@ -257,7 +257,8 @@ body {
     bottom: 25%;
     font-size: 7vw;
     font-weight: bold;
-    -webkit-text-stroke: 0.3px #ffffff76;
+    color: aliceblue;
+    -webkit-text-stroke: 0.5px #050505;
     overflow-x: auto;
     width: 80%;
     height: 50%;
