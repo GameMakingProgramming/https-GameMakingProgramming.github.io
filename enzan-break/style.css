@@ -178,6 +178,7 @@ body {
 }
 .my-hp {
     position: absolute;
+    bottom: 1%;
     background-color: rgb(110, 110, 110);
     border: 0.5px solid #0f0f0f;
     width: 100%;
@@ -256,6 +257,7 @@ body {
     bottom: 20%;
     font-size: 110%;
     font-weight: bold;
+    -webkit-text-stroke: 0.3px #ffffff76;
     overflow-x: auto;
     width: 80%;
     height: 50%;

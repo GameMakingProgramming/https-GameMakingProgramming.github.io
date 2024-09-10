@@ -44,7 +44,7 @@ let myStatus = [3, 20, 20] //ライフ[0], HP[1] ,残りHP[2]
 
 function rivalStatusSetting() {
     if ((numberOfFloors + 1) % 10 !== 0) {
-        rivalStatus[0] = random(31,5);
+        rivalStatus[0] = random(36,5);
         if (random(6,0) > 2) {
             rivalStatus[1] = random(8,4);
             rivalStatus[2] = random(2,0);
@@ -54,7 +54,7 @@ function rivalStatusSetting() {
         }
         rivalStatus[3] = random(5,0);
     } else {
-        rivalStatus[0] = random(61,30);
+        rivalStatus[0] = random(101,70);
         if (random(6,0) > 2) {
             rivalStatus[1] = random(11,8);
             rivalStatus[2] = random(2,0);
