@@ -10,4 +10,6 @@ btn.addEventListener('click', () => {
 bar.addEventListener('click', () => {
     
     animasion.classList.remove('animasion');
+console.log(bar);
 })
+

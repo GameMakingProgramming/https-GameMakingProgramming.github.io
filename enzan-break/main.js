@@ -14,6 +14,7 @@ const damageReceivedDisplay = document.getElementById('damageReceivedDisplay');
 const damageReceivedHtml = document.getElementById('damageReceivedHtml');
 
 const floor = document.getElementById('floor');
+const rivalAnimasion = document.getElementById('rivalAnimasion');
 const rivalAttack = document.getElementById('rivalAttack');
 const rivalDefense = document.getElementById('rivalDefense');
 const rivalWeakness = document.getElementById('rivalWeakness');
@@ -98,6 +99,7 @@ function goUpTheStairs () {
         setting ();
         stairsScreen.addEventListener('click', function () { //画面をクリックしたら
             stairsScreen.style.visibility = 'hidden'; //階段画面を非表示にする
+            rivalAnimasion.classList.replace('rival-down-animasion', 'rival-up-animasion');
         })
     }, 1000);
 }
@@ -347,6 +349,8 @@ calculation.addEventListener('click', function () { //演斬をクリックし�
             barAnimasion.classList.add('bar-animasion');
             numOrOpe = 4; //切り替えスイッチを4にする
             rivalDamageDisplay(); //ダメージを表示
+            setTimeout(() => {
+            rivalAnimasion.classList.replace('rival-up-animasion', 'rival-down-animasion');
             setTimeout(() => { //1.5秒後に
                 stairsScreen.style.visibility = 'visible'; //階段画面を表示
                 getItem(3,2);
@@ -359,6 +363,7 @@ calculation.addEventListener('click', function () { //演斬をクリックし�
                 numOrOpe = 0; //切り替えスイッチを0にする
                 console.log('yaatta');
             }, 3000);
+        }, 1500);
         }
     }, 500);
 }, 600);
@@ -404,4 +409,8 @@ backSpace.addEventListener('click', function () { //クリックされたら
 // const katana = document.getElementById('katana');
 // katana.addEventListener('click', () => {
 //     katana.classList.toggle('katana-animation');
+// })
+// input.addEventListener('click', () => {
+//     rivalAnimasion.classList.replace('rival-up-animasion', 'rival-down-animasion');
+//     console.log('aaaa');
 // })

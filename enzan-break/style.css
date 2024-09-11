@@ -89,12 +89,29 @@ body {
     top: 5%;
     right: 5%;
 }
-.rival-character img {
+.rival-character{
     width: 70%;
     position: absolute;
     bottom: 0%;
     left: 50%;
     transform: translate(-50%);
+}
+.rival-character img{
+    width: 100%;
+}
+.rival-up-animasion{
+    animation: character-up-animation 2s;
+}
+@keyframes character-up-animation{
+    from{transform:translate(-50%, 100%);}
+    to{transform:translate(-50%, 0%);}
+}
+.rival-down-animasion{
+    animation: character-down-animation forwards 2s;
+}
+@keyframes character-down-animation{
+    from{transform:translate(-50%, 0%);}
+    to{transform:translate(-50%, 100%);}
 }
 .rival-life {
     position: absolute;
