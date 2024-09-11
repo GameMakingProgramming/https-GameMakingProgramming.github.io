@@ -363,7 +363,7 @@ calculation.addEventListener('click', function () { //演斬をクリックし�
                 numOrOpe = 0; //切り替えスイッチを0にする
                 console.log('yaatta');
             }, 3000);
-        }, 1500);
+        }, 1000);
         }
     }, 500);
 }, 600);
