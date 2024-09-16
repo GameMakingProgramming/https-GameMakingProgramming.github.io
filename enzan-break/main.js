@@ -27,6 +27,15 @@ const myMaxHp = document.getElementById('myMaxHp');
 const myHp = document.getElementById('myHp');
 const myHpBar = document.getElementById('myHpBar');
 const barAnimasion = document.getElementById('barAnimasion');
+const rivalImage = document.getElementById('rivalImage');
+
+const slime = new Array
+("./image/slime1.png","./image/slime2.png","./image/slime3.png",
+"./image/slime4.png","./image/slime5.png","./image/slime6.png");
+const jellyfish = new Array
+("./image/jellyfish1.png","./image/jellyfish2.png","./image/jellyfish3.png",
+"./image/jellyfish4.png","./image/jellyfish5.png","./image/jellyfish6.png",);
+const boss = new Array("./image/boss1.png","./image/boss2.png");
 
 // let attackFormula = []; //手札
 let attackFormulaNum = []; //数字の手札
@@ -49,9 +58,11 @@ function rivalStatusSetting() {
         if (random(6,0) > 2) {
             rivalStatus[1] = random(8,4);
             rivalStatus[2] = random(2,0);
+            rivalImage.src = jellyfish[random(6,0)];
         } else {
             rivalStatus[1] = random(4,1);
             rivalStatus[2] = random(7,3);
+            rivalImage.src = slime[random(6,0)];
         }
         rivalStatus[3] = random(5,0);
     } else {
@@ -59,9 +70,11 @@ function rivalStatusSetting() {
         if (random(6,0) > 2) {
             rivalStatus[1] = random(11,8);
             rivalStatus[2] = random(2,0);
+            rivalImage.src = boss[1]
         } else {
             rivalStatus[1] = random(4,1);
             rivalStatus[2] = random(10,7);
+            rivalImage.src = boss[0];
         }
         rivalStatus[3] = random(4,0);
     }
