@@ -18,19 +18,21 @@
 
     <!-- 階段画面 -->
      <div class="stairs" id="stairsScreen">
-        <p><span id="stairs"></span>階</p>
+        <p class="number-of-floors"><span id="stairs"></span>里</p>
+        <p class="boss" id="warning">BOSS</p>
      </div>
 
     <!-- バトル画面 -->
     <div  class="battle-area">
         <!-- 敵エリア -->
         <div class="rival-area">
+        <img src="./image/takeyabu.jpg" alt="" class="back">
             <!-- 敵キャラ -->
             <div class="rival-character rival-down-animasion" id="rivalAnimasion">
                 <img src="./image/slime1.png" alt="" id="rivalImage">
             </div>
             <!-- 階数 -->
-            <div class="floor"><span id="floor"></span>階</div>
+            <div class="floor"><span id="floor"></span>里</div>
             <!-- ステータス -->
             <div class="status">
                 <ul>
@@ -56,37 +58,40 @@
         <div class="my-area">
             <!-- 自HP -->
             <div class="my-life">
-                <div class="heart" id="myLife">♥♥♥</div>
+                <div class="heart">
+                    <span id="lastLife">♥</span><span id="secondLife">♥</span><span id="firstLife">♥</span>
+                </div>
                 <div class="my-hp">
                     <div class="my-hp-bar" id="myHpBar"></div>
                     <p><span id="myHp"></span>/<span id="myMaxHp"></span></p>
                 </div>
             </div>
 
-            <!-- 数字スペース -->
-            <div class="numbers-space" id="numbers">
-            </div>
-            <!-- 演算子スペース -->
-            <div class="operator-space" id="operator">
-            </div>
+            <div class="card">
+                <img src="./image/makimono2.png" class="makimono">
+                <!-- 数字スペース -->
+                 <div class="numbers-space" id="numbers"></div>
+                <!-- 演算子スペース -->
+                 <div class="operator-space" id="operator"></div>
+                </div>
+            
             <!-- 受けたダメージ -->
             <div class="damage-received" id="damageReceivedHtml">
                 <p id="damageReceivedDisplay"></p>
              </div>
             </div>
             <!-- 攻撃式 -->
-                <div class="attack-formula">
-                    <!-- <input id="input" type="text" readonly> -->
-                     <div class="katana" id="katana">
-                        <img src="./image/katana.png" alt="">
-                        <p id="input"></p>
-                        <button id="calculation">演斬</button>
-                     </div>
-                    <div class="btn">
-                        <button id="parentheses">( )</button>
-                        <button id="back-space">☒</button>
-                    </div>
+            <div class="attack-formula">
+                <div class="katana" id="katana">
+                    <img src="./image/katana.png" alt="">
+                    <p id="input"></p>
+                    <button id="calculation">演斬</button>
                 </div>
+                <div class="btn">
+                    <button id="parentheses">( )</button>
+                    <button id="back-space">☒</button>
+                </div>
+            </div>
     </div>
     <script src="main.js"></script>
 </body>

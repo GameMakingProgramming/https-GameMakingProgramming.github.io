@@ -14,6 +14,7 @@ const damageReceivedDisplay = document.getElementById('damageReceivedDisplay');
 const damageReceivedHtml = document.getElementById('damageReceivedHtml');
 
 const floor = document.getElementById('floor');
+const warning = document.getElementById('warning');
 const rivalAnimasion = document.getElementById('rivalAnimasion');
 const rivalAttack = document.getElementById('rivalAttack');
 const rivalDefense = document.getElementById('rivalDefense');
@@ -22,7 +23,10 @@ const rivalMAxLife = document.getElementById('rivalMAxLife');
 const rivalLife = document.getElementById('rivalLife');
 const rivalRemainingLifeBar = document.getElementById('rivalRemainingLifeBar');
 const rivalLostlifeBar = document.getElementById('rivalLostlifeBar');
-const myLife = document.getElementById('myLife');
+// const myLife = document.getElementById('myLife');
+const lastLife = document.getElementById('lastLife');
+const secondLife = document.getElementById('secondLife');
+const firstLife = document.getElementById('firstLife');
 const myMaxHp = document.getElementById('myMaxHp');
 const myHp = document.getElementById('myHp');
 const myHpBar = document.getElementById('myHpBar');
@@ -66,14 +70,14 @@ function rivalStatusSetting() {
         }
         rivalStatus[3] = random(5,0);
     } else {
-        rivalStatus[0] = random(101,70);
+        rivalStatus[0] = random(1000,500);
         if (random(6,0) > 2) {
             rivalStatus[1] = random(11,8);
             rivalStatus[2] = random(2,0);
             rivalImage.src = boss[1]
         } else {
-            rivalStatus[1] = random(4,1);
-            rivalStatus[2] = random(10,7);
+            rivalStatus[1] = random(6,3);
+            rivalStatus[2] = random(11,8);
             rivalImage.src = boss[0];
         }
         rivalStatus[3] = random(4,0);
@@ -108,12 +112,23 @@ function setting () {
 function goUpTheStairs () {
     setTimeout(() => { //1秒後に
         numberOfFloors++; //階数を1増やす
-        stairs.innerText = numberOfFloors; //階数を表示する
-        setting ();
-        stairsScreen.addEventListener('click', function () { //画面をクリックしたら
+        if (numberOfFloors % 10 == 0) {
+            warning.style.visibility = 'visible';
+            stairs.innerText = numberOfFloors; //階数を表示する
+            setting ();
+            stairsScreen.addEventListener('click', function () { //画面をクリックしたら
+            stairsScreen.style.visibility = 'hidden'; //階段画面を非表示にする
+            warning.style.visibility = 'hidden';
+            rivalAnimasion.classList.replace('rival-down-animasion', 'rival-up-animasion');
+        })
+        } else {
+            stairs.innerText = numberOfFloors; //階数を表示する
+            setting ();
+            stairsScreen.addEventListener('click', function () { //画面をクリックしたら
             stairsScreen.style.visibility = 'hidden'; //階段画面を非表示にする
             rivalAnimasion.classList.replace('rival-down-animasion', 'rival-up-animasion');
         })
+    }
     }, 1000);
 }
 
@@ -130,6 +145,7 @@ function rivalDamageDisplay () {
     }, 1000);
 }
 
+//弱点
 function Weakness(a) {
            if (rivalStatus[3] == 0 && 0 > a) {
         return -2 * a;
@@ -144,6 +160,19 @@ function Weakness(a) {
     }
 }
 
+// ハート表示
+function heart() {
+           if (myStatus[0] == 3) {
+        firstLife.classList.remove('lost-heart');
+    } else if (myStatus[0] == 2) {
+        firstLife.classList.add('lost-heart');
+        secondLife.classList.remove('lost-heart');
+    } else if (myStatus[0] == 1) {
+        secondLife.classList.add('lost-heart');
+    } else if (myStatus[0] == 0) {
+        lastLife.classList.add('lost-heart');
+    }
+}
 
 //ランダム計算
 function random (a, b) {
@@ -203,6 +232,11 @@ attackFormulaNum.forEach((value, index) => {
     const cards = document.createElement('a'); //aタグを作る
     cards.innerText = value; //aタグにattackFormulaNumを入れる
     numbers.appendChild(cards); //aタグをnumbersの子要素にする
+    if (value >= 1) {
+        cards.classList.add('color-' + value);
+    } else {
+        cards.classList.add('color-0');
+    }
 
     cards.addEventListener("click", function () {//aタグをクリックしたら
     if (numOrOpe == 0 && !cards.classList.contains('selected')) { //numOrOpeが0でボタンが押されていなかったら
@@ -337,11 +371,13 @@ calculation.addEventListener('click', function () { //演斬をクリックし�
                     setTimeout(() => { //3秒後に
                     myStatus[0]--; //ハートを減らして
                     myStatus[2] = myStatus[1]; //HPを最大にする
-                    myLife.innerText = myStatus[0]; //ハートを表示させる
-                    myHp.innerText = myStatus[2]; //HPを表示させる
-                    myHpBar.style.width = 100 + '%' //HPバーを最大にする
-                    if (0 == myStatus[0]) { //ハートが0になったら
-                        console.log('ゲームオーバー'); //
+                    heart();
+                    if (myStatus[0] > 0) {
+                        myHp.innerText = myStatus[2]; //HPを表示させる
+                        myHpBar.style.width = 100 + '%' //HPバーを最大にする   
+                    } else {
+                        console.log('ゲームオーバー');
+                        
                     }
                     }, 3000);
                 }
