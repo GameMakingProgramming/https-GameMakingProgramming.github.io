@@ -120,6 +120,9 @@ function goUpTheStairs () {
             stairsScreen.style.visibility = 'hidden'; //階段画面を非表示にする
             warning.style.visibility = 'hidden';
             rivalAnimasion.classList.replace('rival-down-animasion', 'rival-up-animasion');
+            setTimeout(() => {
+                rivalAnimasion.classList.replace('rival-up-animasion', 'rival-sway-animasion');
+            }, 2500);
         })
         } else {
             stairs.innerText = numberOfFloors; //階数を表示する
@@ -127,6 +130,9 @@ function goUpTheStairs () {
             stairsScreen.addEventListener('click', function () { //画面をクリックしたら
             stairsScreen.style.visibility = 'hidden'; //階段画面を非表示にする
             rivalAnimasion.classList.replace('rival-down-animasion', 'rival-up-animasion');
+            setTimeout(() => {
+                rivalAnimasion.classList.replace('rival-up-animasion', 'rival-sway-animasion');
+            }, 2500);
         })
     }
     }, 1000);
@@ -367,10 +373,12 @@ calculation.addEventListener('click', function () { //演斬をクリックし�
             barAnimasion.classList.add('bar-animasion');
             rivalDamageDisplay(); //ダメージを表示
             damageReceivedDisplay.innerText = rivalStatus[1]; // 受けたダメージをhtmlに書き込む
+            setTimeout(() => {
+                rivalAnimasion.classList.replace('rival-sway-animasion', 'rival-attack-animasion');
             setTimeout(() => { //3秒後に
                 damageReceivedHtml.style.visibility = 'visible'; //htmlを表示
                 myStatus[2] = myStatus[2] - rivalStatus[1]; //自分のHPを減らす
-                if (0 < myStatus[2]) { //Hが残ったら
+                if (0 < myStatus[2]) { //HPが残ったら
                     myHp.innerText = myStatus[2]; //残ったHPを表示させる
                     let myHpRatio = myStatus[2] / myStatus[1] * 100; //HPバーの割合
                     myHpBar.style.width = myHpRatio + '%'; //HPバーを減らす
@@ -391,6 +399,7 @@ calculation.addEventListener('click', function () { //演斬をクリックし�
                     }, 3000);
                 }
                 setTimeout(() => { //1.5秒後に
+                    rivalAnimasion.classList.replace( 'rival-attack-animasion', 'rival-sway-animasion');
                     damageReceivedHtml.style.visibility = 'hidden'; //ダメージの表示を消す
                     numOrOpe = 0; //切り替えスイッチを0にする
                     setTimeout(() => {
@@ -399,7 +408,8 @@ calculation.addEventListener('click', function () { //演斬をクリックし�
                         buttonSetting ();
                     }, 1000);
                     }, 1500);
-            }, 3000);
+            }, 500);
+        }, 2000);
         } else { //相手HPがなくなったら
             rivalLife.innerText = 0 //残りHPを0にして表示
             rivalRemainingLifeBar.style.width = 0 + '%'; //HPバーを0にする
@@ -408,7 +418,7 @@ calculation.addEventListener('click', function () { //演斬をクリックし�
             numOrOpe = 4; //切り替えスイッチを4にする
             rivalDamageDisplay(); //ダメージを表示
             setTimeout(() => {
-            rivalAnimasion.classList.replace('rival-up-animasion', 'rival-down-animasion');
+            rivalAnimasion.classList.replace('rival-sway-animasion', 'rival-down-animasion');
             setTimeout(() => { //1.5秒後に
                 stairsScreen.style.visibility = 'visible'; //階段画面を表示
                 getItem(3,2);
