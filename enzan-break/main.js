@@ -253,6 +253,15 @@ attackFormulaOpe.forEach((value, index) => {
     const cards = document.createElement('a'); //aタグを作る
     cards.innerText = value; //aタグにattackFormulaOpeを入れる
     operator.appendChild(cards); //aタグをoperatorの子要素にする
+           if (value == '+') {
+        cards.classList.add('color-p');
+    } else if (value == '-') {
+        cards.classList.add('color-m');
+    } else if (value == '×') {
+        cards.classList.add('color-t');
+    } else if (value == '÷') {
+        cards.classList.add('color-d');
+    }
 
     cards.addEventListener("click", function () { //aタグをクリックしたら
     if (numOrOpe == 1 && !cards.classList.contains('selected')) { //numOrOpeが1でボタンが押されていなかったら

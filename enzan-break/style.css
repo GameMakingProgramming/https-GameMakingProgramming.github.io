@@ -348,27 +348,32 @@ body {
 .color-8 {background-color: hsl(320, 100%, 20%);}
 .color-9 {background-color: hsl(360, 100%, 20%);}
 .color-0 {background-color: hsl(0, 0%, 50%);}
+.color-p {background-color: hsl(090, 100%, 30%);}
+.color-m {background-color: hsl(180, 100%, 30%);}
+.color-t {background-color: hsl(270, 100%, 30%);}
+.color-d {background-color: hsl(360, 100%, 30%);}
 
 .card {
     height: 78%;
     width: 100%;
     position: absolute;
     bottom: 0%;
-    background-color: #0f0f0f;
+    /* background-color: #0f0f0f; */
 }
-.makimono {
+/* .makimono {
     height: 100%;
-    width: 70%;
+    width: 100%;
     background-color: #65984a;
-}
+} */
 .numbers-space {
-    height: 85%;
-    width: 54%;
+    height: 98%;
+    width: 56%;
     position: absolute;
-    left: 2%;
-    top: 14%;
-    border-radius: 5%;
-    /* background-color: rgba(84, 84, 84, 0.972); */
+    left: 1%;
+    top: 0%;
+    border-radius: 3%;
+    border: solid 2vw#4f763a;
+    background-color: rgba(250, 241, 161, 0.972);
 }
 .numbers-space a {
     margin: 1%;
@@ -390,12 +395,14 @@ body {
     transition: .5s;
 }
 .operator-space {
-    height: 85%;
-    width: 40%;
+    height: 98%;
+    width: 42%;
     position: absolute;
-    right: 2%;
-    top: 14%;
-    background-color: rgb(151, 252, 69);
+    right: 1%;
+    top: 0%;
+    border-radius: 3%;
+    border: solid 2vw#6f4a74;
+    background-color: rgba(250, 241, 161, 0.972);
 }
 .operator-space a {
     margin: 1%;
@@ -404,7 +411,7 @@ body {
     height: 12vw;
     display: inline-block;
     text-decoration: none;
-    background-color: #65984a;
+    /* background-color: #65984a; */
     color: #FFF;
     line-height: 12vw;
     border-radius: 50%;
