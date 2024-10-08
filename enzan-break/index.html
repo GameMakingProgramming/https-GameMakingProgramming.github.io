@@ -70,9 +70,9 @@
             <div class="card">
                 <!-- <img src="./image/makimono3.png" class="makimono"> -->
                 <!-- 数字スペース -->
-                 <div class="numbers-space" id="numbers"></div>
+                 <div class="numbers-cover"><div class="numbers-space" id="numbers"></div></div>
                 <!-- 演算子スペース -->
-                 <div class="operator-space" id="operator"></div>
+                 <div class="operator-cover"><div class="operator-space" id="operator"></div></div>
                 </div>
             
             <!-- 受けたダメージ -->
@@ -80,8 +80,9 @@
                 <p id="damageReceivedDisplay"></p>
              </div>
             </div>
+
             <!-- 攻撃式 -->
-            <div class="attack-formula">
+             <div class="attack-formula">
                 <div class="katana" id="katana">
                     <img src="./image/katana.png" alt="">
                     <p id="input"></p>
@@ -92,6 +93,12 @@
                     <button id="back-space">☒</button>
                 </div>
             </div>
+
+            <!-- 引く手札 -->
+             <div class="drow-cards drow-cards-end" id="drowCards"> 
+                <img src="./image/makimono.png" alt="">
+                <div class="drow-card" id="drowCard"></div>
+             </div>
     </div>
     <script src="main.js"></script>
 </body>

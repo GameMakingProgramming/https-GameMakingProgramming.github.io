@@ -32,6 +32,8 @@ const myHp = document.getElementById('myHp');
 const myHpBar = document.getElementById('myHpBar');
 const barAnimasion = document.getElementById('barAnimasion');
 const rivalImage = document.getElementById('rivalImage');
+const drowCards = document.getElementById('drowCards');
+const drowCard = document.getElementById('drowCard');
 
 const slime = new Array
 ("./image/slime1.png","./image/slime2.png","./image/slime3.png",
@@ -112,32 +114,25 @@ function setting () {
 function goUpTheStairs () {
     setTimeout(() => { //1秒後に
         numberOfFloors++; //階数を1増やす
-        if (numberOfFloors % 10 == 0) {
-            warning.style.visibility = 'visible';
+            if (numberOfFloors % 10 == 0) {warning.style.visibility = 'visible';}
             stairs.innerText = numberOfFloors; //階数を表示する
             setting ();
-            stairsScreen.addEventListener('click', function () { //画面をクリックしたら
-            stairsScreen.style.visibility = 'hidden'; //階段画面を非表示にする
-            warning.style.visibility = 'hidden';
-            rivalAnimasion.classList.replace('rival-down-animasion', 'rival-up-animasion');
-            setTimeout(() => {
-                rivalAnimasion.classList.replace('rival-up-animasion', 'rival-sway-animasion');
-            }, 2500);
-        })
-        } else {
-            stairs.innerText = numberOfFloors; //階数を表示する
-            setting ();
-            stairsScreen.addEventListener('click', function () { //画面をクリックしたら
-            stairsScreen.style.visibility = 'hidden'; //階段画面を非表示にする
-            rivalAnimasion.classList.replace('rival-down-animasion', 'rival-up-animasion');
-            setTimeout(() => {
-                rivalAnimasion.classList.replace('rival-up-animasion', 'rival-sway-animasion');
-            }, 2500);
-        })
+            stairsScreen.addEventListener('click', function screenEvent() { //画面をクリックしたら
+                stairsScreen.removeEventListener('click', screenEvent);
+                stairsScreen.style.visibility = 'hidden'; //階段画面を非表示にする
+                if (numberOfFloors % 10 == 0) {warning.style.visibility = 'hidden';}
+                rivalAnimasion.classList.replace('rival-down-animasion', 'rival-up-animasion');
+                setTimeout(() => {
+                    rivalAnimasion.classList.replace('rival-up-animasion', 'rival-sway-animasion');
+                    if (numberOfFloors == 1) {
+                        getItem(8,4);
+                    } else {
+                        getItem(3,2);
+                    }
+                }, 2500);
+            })
+        }, 1000);
     }
-    }, 1000);
-}
-
 
 //与えたダメージの表示
 function rivalDamageDisplay () { 
@@ -188,11 +183,17 @@ function random (a, b) {
 //アイテム入手
 //数字a個と演算子b個を配列に追加して表示させる
 function getItem (a, b) {
+    let drawNumCards = [];
+    let drawOpeCards = [];
     for (let index = 0; index < a; index++) {
         if (0 == random(10,0)) {
-            attackFormulaNum.push(random(9,1) / 10);
+            let drawNum = random(9,1) / 10
+            attackFormulaNum.push(drawNum);
+            drawNumCards.push(drawNum);
         } else {
-            attackFormulaNum.push(random(9,1));
+            let drawNum = random(9,1)
+            attackFormulaNum.push(drawNum);
+            drawNumCards.push(drawNum);
         }
     }
     for (let index = 0; index < b; index++) {
@@ -200,31 +201,64 @@ function getItem (a, b) {
             case 0:
             case 1:
                 attackFormulaOpe.push('+');
+                drawOpeCards.push('+');
                 break;
         
             case 2:
                 attackFormulaOpe.push('-');
+                drawOpeCards.push('-');
                 break;
 
             case 3:
                 attackFormulaOpe.push('×');
+                drawOpeCards.push('×');
                 break;
         
             case 4:
                 attackFormulaOpe.push('÷');
+                drawOpeCards.push('÷');
                 break;
         }
     }
+    eraseAllButtons(drowCard,drowCard)
+    drawNumCards.forEach((value, index) => {
+        const cards = document.createElement('a'); //aタグを作る
+        cards.innerText = value; //aタグにdrawNumCardsを入れる
+        drowCard.appendChild(cards); //aタグをnumbersの子要素にする
+    });
+    drawOpeCards.forEach((value, index) => {
+        const cards = document.createElement('a'); //aタグを作る
+        cards.innerText = value; //aタグにdrawOpeCardsを入れる
+        drowCard.appendChild(cards); //aタグをnumbersの子要素にする
+    });
+    drowCards.classList.replace('drow-cards-end', 'drow-cards-start');
+    drowCards.style.visibility = 'visible';
+    setTimeout(() => {
+        let cardsChildren = drowCard.children;
+        for (let i = 0, len = cardsChildren.length; i < len; i++) {
+            cardsChildren[i].classList.add('drow-card-move');
+        };
+    setTimeout(() => {
+        eraseAllButtons(numbers,operator);
+        buttonSetting();
+    setTimeout(() => {
+        drowCards.classList.replace( 'drow-cards-start', 'drow-cards-end');
+    setTimeout(() => {
+        drowCards.style.visibility = 'hidden';
+    }, 3000);
+    }, 1000);
+    }, 1000);
+    }, 3000);
 }
 
 
 //ボタンを削除する
-function eraseAllButtons() {
-    while(numbers.firstChild) {
-        numbers.removeChild(numbers.firstChild);
+function eraseAllButtons(num, ope) {
+    while(num.firstChild) {
+        num.removeChild(num.firstChild);
     }
-    while(operator.firstChild) {
-        operator.removeChild(operator.firstChild);
+    while(ope.firstChild) {
+        ope.removeChild(ope.firstChild);
     }
 }
 
@@ -404,8 +438,6 @@ calculation.addEventListener('click', function () { //演斬をクリックし�
                     numOrOpe = 0; //切り替えスイッチを0にする
                     setTimeout(() => {
                         getItem(3,2);
-                        eraseAllButtons();
-                        buttonSetting ();
                     }, 1000);
                     }, 1500);
             }, 500);
@@ -421,9 +453,6 @@ calculation.addEventListener('click', function () { //演斬をクリックし�
             rivalAnimasion.classList.replace('rival-sway-animasion', 'rival-down-animasion');
             setTimeout(() => { //1.5秒後に
                 stairsScreen.style.visibility = 'visible'; //階段画面を表示
-                getItem(3,2);
-                eraseAllButtons();
-                buttonSetting();
                 rivalStatusSetting();
                 rivalRemainingLifeBar.style.width = 100 + '%';
                 rivalLostlifeBar.style.width = 0 + '%';
@@ -443,13 +472,9 @@ calculation.addEventListener('click', function () { //演斬をクリックし�
 gameStart.addEventListener('click', function () { //ゲームスタートを押したら
     startMenu.style.visibility = 'hidden'; //スタート画面を消す
     goUpTheStairs (); //階段を上る
-
-getItem (8, 4);
 setting ();
 // // 数字と演算子を分ける
-// sorting ();
 // 数字と演算子の処理
-buttonSetting ();
 //固定ボタンセット
 fixedButtonSetting ()
 })
