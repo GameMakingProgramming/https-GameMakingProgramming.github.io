@@ -59,19 +59,7 @@ let myStatus = [3, 20, 20] //ライフ[0], HP[1] ,残りHP[2]
 
 
 function rivalStatusSetting() {
-    if ((numberOfFloors + 1) % 10 !== 0) {
-        rivalStatus[0] = random(36,5);
-        if (random(6,0) > 2) {
-            rivalStatus[1] = random(8,4);
-            rivalStatus[2] = random(2,0);
-            rivalImage.src = jellyfish[random(6,0)];
-        } else {
-            rivalStatus[1] = random(4,1);
-            rivalStatus[2] = random(7,3);
-            rivalImage.src = slime[random(6,0)];
-        }
-        rivalStatus[3] = random(5,0);
-    } else {
+    if ((numberOfFloors + 1) % 10 == 0) {
         rivalStatus[0] = random(1000,500);
         if (random(6,0) > 2) {
             rivalStatus[1] = random(11,8);
@@ -83,6 +71,30 @@ function rivalStatusSetting() {
             rivalImage.src = boss[0];
         }
         rivalStatus[3] = random(4,0);
+    } else if ((numberOfFloors + 1) % 5 == 0) {
+        rivalStatus[0] = random(500,100);
+        if (random(6,0) > 2) {
+            rivalStatus[1] = random(9,6);
+            rivalStatus[2] = random(2,0);
+            rivalImage.src = boss[1]
+        } else {
+            rivalStatus[1] = random(6,3);
+            rivalStatus[2] = random(9,6);
+            rivalImage.src = boss[0];
+        }
+        rivalStatus[3] = random(4,0);
+    } else {
+        rivalStatus[0] = random(36,5);
+        if (random(6,0) > 2) {
+            rivalStatus[1] = random(8,4);
+            rivalStatus[2] = random(2,0);
+            rivalImage.src = jellyfish[random(6,0)];
+        } else {
+            rivalStatus[1] = random(4,1);
+            rivalStatus[2] = random(7,3);
+            rivalImage.src = slime[random(6,0)];
+        }
+        rivalStatus[3] = random(5,0);
     }
     rivalStatus[4] = rivalStatus[0];
 }
@@ -127,7 +139,7 @@ function goUpTheStairs () {
                     if (numberOfFloors == 1) {
                         getItem(8,4);
                     } else {
-                        getItem(3,2);
+                        getItem(numberOfAcquisitions()[0], numberOfAcquisitions()[1]);
                     }
                 }, 2500);
             })
@@ -249,6 +261,25 @@ function getItem (a, b) {
     }, 1000);
     }, 1000);
     }, 3000);
+}
+
+// function numberOfAcquisitions (a, b) {
+//     let x = 0; let y = 5;
+//     for (let i = 0; i < 5 && ((a+x)/20) < ((b+y)/15); i++) {
+//         x++; y--;
+//     }
+//     console.log(x);
+//     console.log(y);
+//     return [x, y];
+// }
+// console.log(numberOfAcquisitions(8,5));
+
+function numberOfAcquisitions () {
+    let x = 0; let y = 5;
+    for (let i = 0; i < 5 && ((attackFormulaNum.length+x)/20) < ((attackFormulaOpe.length+y)/15); i++) {
+        x++; y--;
+    }
+    return [x, y];
 }
 
 
@@ -437,7 +468,7 @@ calculation.addEventListener('click', function () { //演斬をクリックし�
                     damageReceivedHtml.style.visibility = 'hidden'; //ダメージの表示を消す
                     numOrOpe = 0; //切り替えスイッチを0にする
                     setTimeout(() => {
-                        getItem(3,2);
+                        getItem(numberOfAcquisitions()[0], numberOfAcquisitions()[1]);
                     }, 1000);
                     }, 1500);
             }, 500);
