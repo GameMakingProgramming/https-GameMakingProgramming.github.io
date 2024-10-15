@@ -47,21 +47,21 @@ const boss = new Array("./image/boss1.png","./image/boss2.png");
 let attackFormulaNum = []; //数字の手札
 let attackFormulaOpe = []; //演算子の手札
 let selectionField = []; //選んだ手札
-let numOrOpe = [0]; //切り替えスイッチ
+let numOrOpe = 0; //切り替えスイッチ
 let numLog = []; //選んだ数字の手札の位置
 let opeLog = []; //選んだ演算子の手札の位置
-let parenthesesCount = [0]; //（）の数のカウンター
-let turn = [0];
-let numberOfFloors = [0]; //階数
+let parenthesesCount = 0; //（）の数のカウンター
+let turn = 0;
+let numberOfFloors = 0; //階数
 stairs.innerText = numberOfFloors; //0階を表示
 
 let rivalStatus = [10, 3, 0, 4, 10] //HP[0], 攻撃[1], 防御[2], 弱点[3], 残りHP[4]
-let myStatus = [3, 20, 20] //ライフ[0], HP[1] ,残りHP[2]
+let myStatus = [3, 10, 10] //ライフ[0], HP[1] ,残りHP[2]
 
 
 function rivalStatusSetting() {
     if ((numberOfFloors + 1) % 10 == 0) {
-        rivalStatus[0] = random(1000,500);
+        rivalStatus[0] = random(1000+numberOfFloors,500+numberOfFloors);
         if (random(6,0) > 2) {
             rivalStatus[1] = random(11,8);
             rivalStatus[2] = random(2,0);
@@ -73,7 +73,7 @@ function rivalStatusSetting() {
         }
         rivalStatus[3] = random(4,0);
     } else if ((numberOfFloors + 1) % 5 == 0) {
-        rivalStatus[0] = random(500,100);
+        rivalStatus[0] = random(500+numberOfFloors,100+numberOfFloors);
         if (random(6,0) > 2) {
             rivalStatus[1] = random(9,6);
             rivalStatus[2] = random(2,0);
@@ -85,7 +85,7 @@ function rivalStatusSetting() {
         }
         rivalStatus[3] = random(4,0);
     } else {
-        rivalStatus[0] = random(36,5);
+        rivalStatus[0] = random(30+numberOfFloors,5+numberOfFloors);
         if (random(6,0) > 2) {
             rivalStatus[1] = random(8,4);
             rivalStatus[2] = random(2,0);
@@ -141,9 +141,11 @@ function goUpTheStairs () {
                         getItem(8,4);
                     } else {
                         if (turn == 1) {
-                            getItem(numberOfAcquisitions(7)[0], numberOfAcquisitions(7)[1]);
+                            getItem(numberOfAcquisitions(6)[0], numberOfAcquisitions(6)[1]);
+                            turn = 0;
                         } else {
                             getItem(numberOfAcquisitions(5)[0], numberOfAcquisitions(5)[1]);
+                            turn = 0;
                         }
                     }
                 }, 2500);
