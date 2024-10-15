@@ -51,6 +51,7 @@ let numOrOpe = [0]; //切り替えスイッチ
 let numLog = []; //選んだ数字の手札の位置
 let opeLog = []; //選んだ演算子の手札の位置
 let parenthesesCount = [0]; //（）の数のカウンター
+let turn = [0];
 let numberOfFloors = [0]; //階数
 stairs.innerText = numberOfFloors; //0階を表示
 
@@ -139,7 +140,11 @@ function goUpTheStairs () {
                     if (numberOfFloors == 1) {
                         getItem(8,4);
                     } else {
-                        getItem(numberOfAcquisitions()[0], numberOfAcquisitions()[1]);
+                        if (turn == 1) {
+                            getItem(numberOfAcquisitions(7)[0], numberOfAcquisitions(7)[1]);
+                        } else {
+                            getItem(numberOfAcquisitions(5)[0], numberOfAcquisitions(5)[1]);
+                        }
                     }
                 }, 2500);
             })
@@ -274,9 +279,9 @@ function getItem (a, b) {
 // }
 // console.log(numberOfAcquisitions(8,5));
 
-function numberOfAcquisitions () {
-    let x = 0; let y = 5;
-    for (let i = 0; i < 5 && ((attackFormulaNum.length+x)/20) < ((attackFormulaOpe.length+y)/15); i++) {
+function numberOfAcquisitions (num) {
+    let x = 0; let y = num;
+    for (let i = 0; i < num && ((attackFormulaNum.length+x)/20) < ((attackFormulaOpe.length+y)/15); i++) {
         x++; y--;
     }
     return [x, y];
@@ -407,6 +412,7 @@ backSpace.addEventListener('click', function () { //クリックされたら
 calculation.addEventListener('click', function () { //演斬をクリックしたら
     if(numOrOpe == 1 && parenthesesCount == 0) { //numOrOpeが1、数字だったら
         numOrOpe++; //numOrOpeを3にする
+        turn++;
         let selectedElement = document.getElementsByClassName('selected'); //selectedクラス、押されていたボタン
         if (0 < selectedElement.length) { //ボタンが押されたものがあったら
                 [...selectedElement].forEach(function(v){ return v.remove() }) //それを消す
@@ -468,7 +474,7 @@ calculation.addEventListener('click', function () { //演斬をクリックし�
                     damageReceivedHtml.style.visibility = 'hidden'; //ダメージの表示を消す
                     numOrOpe = 0; //切り替えスイッチを0にする
                     setTimeout(() => {
-                        getItem(numberOfAcquisitions()[0], numberOfAcquisitions()[1]);
+                        getItem(numberOfAcquisitions(5)[0], numberOfAcquisitions(5)[1]);
                     }, 1000);
                     }, 1500);
             }, 500);
