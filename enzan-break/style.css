@@ -420,6 +420,14 @@ body {
     border-bottom: none !important;
   }
 
+  .erase {
+    -webkit-transform: translateY(0.1rem) !important;
+    transform: translateY(0.1rem);
+    background-color: #322223 !important;
+    box-shadow: 0 0 0.05rem rgba(35, 0, 0, 0.15) !important;
+    border-bottom: none !important;
+  }
+
 .color-1 {background-color: hsl(040, 100%, 20%);}
 .color-2 {background-color: hsl(080, 100%, 20%);}
 .color-3 {background-color: hsl(120, 100%, 20%);}

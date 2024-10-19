@@ -4,8 +4,10 @@ const stairs = document.getElementById('stairs');
 const stairsScreen = document.getElementById('stairsScreen');
 const input = document.getElementById('input');
 const numbers = document.getElementById('numbers');
-const parentheses = document.getElementById('parentheses');
 const operator = document.getElementById('operator');
+const special = document.getElementById('special');
+const release = document.getElementById('release');
+const parentheses = document.getElementById('parentheses');
 const backSpace = document.getElementById('back-space');
 const calculation = document.getElementById('calculation');
 const damageCausedDisplay = document.getElementById('damageCausedDisplay');
@@ -35,6 +37,8 @@ const rivalImage = document.getElementById('rivalImage');
 const drowCards = document.getElementById('drowCards');
 const drowCard = document.getElementById('drowCard');
 
+const compare = (a, b) => {return b - a;} //大きい順に並び替える
+
 const slime = new Array
 ("./image/slime1.png","./image/slime2.png","./image/slime3.png",
 "./image/slime4.png","./image/slime5.png","./image/slime6.png");
@@ -50,6 +54,10 @@ let selectionField = []; //選んだ手札
 let numOrOpe = 0; //切り替えスイッチ
 let numLog = []; //選んだ数字の手札の位置
 let opeLog = []; //選んだ演算子の手札の位置
+let numReleaseLog = [];
+let opeReleaseLog = [];
+let releaseStep = 0;
+let amountOfEnergy = 0;
 let parenthesesCount = 0; //（）の数のカウンター
 let turn = 0;
 let numberOfFloors = 0; //階数
@@ -325,6 +333,18 @@ attackFormulaNum.forEach((value, index) => {
         input.innerText = selectionField.join(''); //配列selectionFieldを',を取って入力フォームに表示する
     }
     });
+
+    cards.addEventListener('click', function () {
+    if (numOrOpe == 6) {
+        if (numReleaseLog.some(elm => {return elm == index})) {
+            numReleaseLog = numReleaseLog.filter(elm => {return elm !== index});
+            cards.classList.remove('erase');
+        } else if (numbers.childElementCount - numReleaseLog.length > 2) {
+            numReleaseLog.push(index);
+            cards.classList.add('erase');
+        }
+    }    
+    });
 });
 // 演算子
 attackFormulaOpe.forEach((value, index) => {
@@ -354,7 +374,19 @@ attackFormulaOpe.forEach((value, index) => {
         cards.classList.add('selected'); //クリックしたaタグにselectedのクラスをつける
         selectionField.push(cards.textContent); //配列selectionFieldにクリックしたaタグの内容を入れる
         input.innerText = selectionField.join(''); //配列selectionFieldを',を取って入力フォームに表示する
-}});
+        }});
+
+    cards.addEventListener('click', function () {
+        if (numOrOpe == 6) {
+            if (opeReleaseLog.some(elm => {return elm == index})) {
+                opeReleaseLog = opeReleaseLog.filter(elm => {return elm !== index});
+                cards.classList.remove('erase');
+            } else if (operator.childElementCount - opeReleaseLog.length > 1) {
+                opeReleaseLog.push(index);
+                cards.classList.add('erase');
+            }
+        }
+    });
 });
 }
 //固定ボタンセット
@@ -369,6 +401,27 @@ parentheses.addEventListener('click', function () {
             parenthesesCount--;
             selectionField.push(')');
             input.innerText = selectionField.join('');
+    }
+})
+
+release.addEventListener('click', function () {
+    if (numOrOpe == 0 && !selectionField[0]) {
+        numOrOpe = 6;
+    } else if (numOrOpe == 6) {
+        let eraseElement = document.getElementsByClassName('erase'); //selectedクラス、押されていたボタン
+        if (0 < eraseElement.length) { //ボタンが押されたものがあったら
+                [...eraseElement].forEach(function(v){ return v.remove() }) //それを消す
+                amountOfEnergy = amountOfEnergy + numReleaseLog.length + opeReleaseLog.length;
+                numReleaseLog.sort(compare); //数字の位置ログを大きい順
+                opeReleaseLog.sort(compare); //演算子の位置ログを大きい順
+                numReleaseLog.forEach(element => attackFormulaNum.splice(element, 1,)); //後半のボタンから1つずつ削除
+                opeReleaseLog.forEach(element => attackFormulaOpe.splice(element, 1,));
+                eraseAllButtons(numbers,operator);
+                buttonSetting();
+                numReleaseLog = [];
+                opeReleaseLog = [];
+            }
+            numOrOpe = 0;
     }
 })
 
@@ -390,11 +443,11 @@ backSpace.addEventListener('click', function () { //クリックされたら
             input.innerText = selectionField.join(''); //配列selectionFieldを',を取って入力フォームに表示する
             let selectionFieldLast = selectionField[selectionField.length-1]
             if ((!selectionField[0] || isNaN(selectionFieldLast)) &&  //消した後最後が文字、もしくは空欄だったら
-            selectionFieldLast !== ')') { //かつ ）じゃなかったら
-                numOrOpe = 0; //numOrOpeを0にする
-            } else { //数字だったら
-                numOrOpe = 1; //numOrOpeを1にする
-            }
+                    selectionFieldLast !== ')') { //かつ ）じゃなかったら
+                        numOrOpe = 0; //numOrOpeを0にする
+                    } else { //数字だったら
+                        numOrOpe = 1; //numOrOpeを1にする
+                    }
         } else if (numOrOpe == 1) { //numOrOpeが1、数字だったら
             numbers.children[numLog[numLog.length-1]].classList.remove('selected'); //直前に入力されたボタンのクラスを外す
             numLog.pop(); //配列logの最後の数字を削除する
@@ -402,11 +455,11 @@ backSpace.addEventListener('click', function () { //クリックされたら
             input.innerText = selectionField.join(''); //配列selectionFieldを',を取って入力フォームに表示する
             let selectionFieldLast = selectionField[selectionField.length-1]
             if ((!selectionField[0] || isNaN(selectionFieldLast)) &&  //消した後最後が文字、もしくは空欄だったら
-            selectionFieldLast !== ')') { //かつ（）じゃなかったら
-                numOrOpe = 0; //numOrOpeを0にする
-            } else { //数字だったら
-                numOrOpe = 1; //numOrOpeを1にする
-            }
+                    selectionFieldLast !== ')') { //かつ ）じゃなかったら
+                        numOrOpe = 0; //numOrOpeを0にする
+                    } else { //数字だったら
+                        numOrOpe = 1; //numOrOpeを1にする
+                    }
         }
             }
 });
@@ -418,7 +471,6 @@ calculation.addEventListener('click', function () { //演斬をクリックし�
         let selectedElement = document.getElementsByClassName('selected'); //selectedクラス、押されていたボタン
         if (0 < selectedElement.length) { //ボタンが押されたものがあったら
                 [...selectedElement].forEach(function(v){ return v.remove() }) //それを消す
-                let compare = (a, b) => {return b - a;} //大きい順に並び替える
                 numLog.sort(compare); //数字の位置ログを大きい順
                 opeLog.sort(compare); //演算子の位置ログを大きい順
                 numLog.forEach(element => attackFormulaNum.splice(element, 1,)); //後半のボタンから1つずつ削除
@@ -506,7 +558,48 @@ calculation.addEventListener('click', function () { //演斬をクリックし�
     }
 })
 }
-// attackFormulaNum = attackFormula.map(Number);
+
+special.addEventListener('click', function () {
+    if (amountOfEnergy > 10) {
+        amountOfEnergy = 0;
+        let rivalLifeRatio = rivalStatus[4] / rivalStatus[0] * 100; //残りHP率
+        damageCausedDisplay.innerText = 30; //htmlに結果を入力
+        rivalStatus[4] = rivalStatus[4] - 30; //残ったHP
+        setTimeout(() => {
+        katana.classList.add('katana-animation');
+        setTimeout(() => { //500後に
+        if (0 < rivalStatus[4]) { //相手HPが残っていたら
+            rivalLife.innerText = rivalStatus[4]; //残りHPを表示
+            let rivalRemainingLifeRatio = rivalStatus[4] / rivalStatus[0] * 100; //残りHP率
+            let rivalLostLifeRatio = rivalLifeRatio - rivalRemainingLifeRatio;
+            rivalRemainingLifeBar.style.width = rivalRemainingLifeRatio + '%'; //HPバーを残りHP率に変える
+            rivalLostlifeBar.style.width = rivalLostLifeRatio + '%';
+            barAnimasion.classList.add('bar-animasion');
+            rivalDamageDisplay(); //ダメージを表示
+        } else { //相手HPがなくなったら
+            rivalLife.innerText = 0 //残りHPを0にして表示
+            rivalRemainingLifeBar.style.width = 0 + '%'; //HPバーを0にする
+            rivalLostlifeBar.style.width = rivalLifeRatio + '%';
+            barAnimasion.classList.add('bar-animasion');
+            numOrOpe = 4; //切り替えスイッチを4にする
+            rivalDamageDisplay(); //ダメージを表示
+            setTimeout(() => {
+                rivalAnimasion.classList.replace('rival-sway-animasion', 'rival-down-animasion');
+            setTimeout(() => { //1.5秒後に
+                stairsScreen.style.visibility = 'visible'; //階段画面を表示
+                rivalStatusSetting();
+                rivalRemainingLifeBar.style.width = 100 + '%';
+                rivalLostlifeBar.style.width = 0 + '%';
+                goUpTheStairs(); //階段を上る
+                numOrOpe = 0; //切り替えスイッチを0にする
+                console.log('yaatta');
+            }, 3000);
+            }, 1000);
+        }
+        }, 500);
+        }, 600);
+    }
+})
 
 gameStart.addEventListener('click', function () { //ゲームスタートを押したら
     startMenu.style.visibility = 'hidden'; //スタート画面を消す
